@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Church of the Living God, Atlanta — Teaching Vault</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #b8963e;
+    --gold-light: #f0e4c0;
+    --gold-dim: #7a5f20;
+    --navy: #0f1e35;
+    --navy2: #1a2f4a;
+    --bg: #f8f6f1;
+    --surface: #ffffff;
+    --surface2: #f2ede4;
+    --border: #e0d8cc;
+    --border2: #c8bfb0;
+    --text: #1a1510;
+    --text2: #5a5248;
+    --text3: #8a8078;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--navy);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 2px solid var(--gold);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+
+  .cross {
+    width: 28px;
+    height: 28px;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .cross::before, .cross::after {
+    content: '';
+    position: absolute;
+    background: var(--gold);
+    border-radius: 1px;
+  }
+  .cross::before { width: 5px; height: 28px; left: 11.5px; top: 0; }
+  .cross::after  { width: 28px; height: 5px; top: 10px; left: 0; }
+
+  .logo-text .name { font-size: 14px; font-weight: 500; color: var(--gold-light); letter-spacing: 0.01em; }
+  .logo-text .sub  { font-size: 11px; color: var(--gold); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 1px; }
+
+  .header-stats { display: flex; gap: 20px; }
+  .hstat { text-align: center; }
+  .hstat-n { font-size: 18px; font-weight: 500; color: var(--gold-light); line-height: 1; }
+  .hstat-l { font-size: 10px; color: var(--gold); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* ── NAV ── */
+  .main-nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    gap: 0;
+  }
+  .nav-btn {
+    padding: 14px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text2);
+    cursor: pointer;
+    border: none;
+    background: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -1px;
+    transition: color .15s, border-color .15s;
+    font-family: 'DM Sans', sans-serif;
+    white-space: nowrap;
+  }
+  .nav-btn.active { color: var(--navy); border-bottom-color: var(--gold); }
+  .nav-btn:hover:not(.active) { color: var(--text); }
+
+  /* ── LAYOUT ── */
+  .page { display: none; padding: 2rem; max-width: 1100px; margin: 0 auto; }
+  .page.active { display: block; }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text3);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* ── LIBRARY ── */
+  .search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .search-bar input {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 16px;
+    font-size: 14px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    transition: border-color .15s;
+  }
+  .search-bar input:focus { border-color: var(--gold); }
+
+  .filter-strip { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+  .fchip {
+    font-size: 12px;
+    padding: 5px 12px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    background: var(--surface);
+    color: var(--text2);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background .1s, border-color .1s, color .1s;
+  }
+  .fchip.on { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+  .fchip:hover:not(.on) { border-color: var(--border2); color: var(--text); }
+
+  .t-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 14px; margin-bottom: 20px; }
+
+  .tcard {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    cursor: pointer;
+    transition: border-color .15s, box-shadow .15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .tcard:hover { border-color: var(--border2); box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+  .tcard.selected { border-color: var(--navy); border-width: 1.5px; }
+  .tcard-accent { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gold); }
+  .tcard-series { font-size: 10px; font-weight: 500; color: var(--gold-dim); text-transform: uppercase; letter-spacing: .07em; margin: 10px 0 6px; }
+  .tcard-title { font-family: 'Lora', serif; font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px; line-height: 1.4; }
+  .tcard-desc { font-size: 12px; color: var(--text2); line-height: 1.55; margin-bottom: 10px; }
+  .tcard-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+  .tag { font-size: 11px; padding: 2px 8px; border-radius: 100px; background: var(--surface2); color: var(--text2); border: 1px solid var(--border); }
+  .tcard-foot { display: flex; justify-content: space-between; align-items: center; }
+  .note-saved-badge { font-size: 11px; color: #2d7a4f; background: #e6f5ed; padding: 2px 8px; border-radius: 100px; }
+  .view-link { font-size: 12px; font-weight: 500; color: var(--navy); background: none; border: none; cursor: pointer; padding: 0; font-family: 'DM Sans', sans-serif; }
+  .view-link:hover { text-decoration: underline; }
+
+  /* ── DETAIL PANEL ── */
+  .detail-panel {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    margin-bottom: 20px;
+  }
+  .detail-panel.active { display: block; }
+  .detail-hdr {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .detail-series { font-size: 11px; font-weight: 500; color: var(--gold-dim); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 6px; }
+  .detail-title { font-family: 'Lora', serif; font-size: 22px; font-weight: 600; color: var(--text); line-height: 1.3; }
+  .close-btn { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 20px; padding: 4px 8px; flex-shrink: 0; }
+  .close-btn:hover { color: var(--text); }
+
+  .detail-body { font-size: 14px; line-height: 1.75; color: var(--text); }
+  .detail-body h3 { font-family: 'Lora', serif; font-size: 16px; font-weight: 600; color: var(--text); margin: 1.5rem 0 .6rem; }
+  .detail-body h4 { font-size: 13px; font-weight: 500; color: var(--text2); margin: 1rem 0 .4rem; text-transform: uppercase; letter-spacing: .05em; }
+  .detail-body p { margin-bottom: .75rem; }
+  .detail-body ul { padding-left: 1.5rem; margin-bottom: .75rem; }
+  .detail-body ul li { margin-bottom: .35rem; }
+
+  .scripture-block {
+    background: var(--surface2);
+    border-left: 3px solid var(--gold);
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Lora', serif;
+    margin: 1rem 0;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+
+  .note-section {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .note-label { font-size: 12px; font-weight: 500; color: var(--text2); margin-bottom: 8px; }
+  .note-area {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    resize: vertical;
+    min-height: 90px;
+    outline: none;
+    transition: border-color .15s;
+  }
+  .note-area:focus { border-color: var(--gold); }
+  .save-note {
+    margin-top: 8px;
+    font-size: 12px;
+    padding: 6px 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background .1s;
+  }
+  .save-note:hover { background: var(--surface2); }
+
+  /* ── KINGDOM BLUEPRINT ── */
+  .kbs-part { margin-bottom: 2rem; }
+  .kbs-part-title { font-family: 'Lora', serif; font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+  .kbs-part-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .kbs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 10px; }
+  .kbs-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.1rem;
+    transition: box-shadow .15s;
+  }
+  .kbs-card.done   { border-left: 4px solid #2d7a4f; }
+  .kbs-card.wip    { border-left: 4px solid var(--gold); }
+  .kbs-card.planned { border-left: 4px solid var(--border2); }
+  .kbs-num { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: .07em; margin-bottom: 5px; }
+  .kbs-card.done .kbs-num   { color: #2d7a4f; }
+  .kbs-card.wip .kbs-num    { color: var(--gold-dim); }
+  .kbs-card.planned .kbs-num { color: var(--text3); }
+  .kbs-name { font-family: 'Lora', serif; font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.35; margin-bottom: 8px; }
+  .kbs-badge { display: inline-block; font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 100px; margin-bottom: 8px; }
+  .b-done  { background: #e6f5ed; color: #2d7a4f; }
+  .b-wip   { background: #faeeda; color: #7a5f20; }
+  .b-plan  { background: var(--surface2); color: var(--text3); }
+  .gen-btn {
+    display: block;
+    width: 100%;
+    margin-top: 8px;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 6px 10px;
+    border: 1px solid var(--navy);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--navy);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    text-align: center;
+    transition: background .12s, color .12s;
+  }
+  .gen-btn:hover { background: var(--navy); color: var(--gold-light); }
+
+  .kbs-hint {
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    padding: 10px 16px;
+    font-size: 12px;
+    color: var(--text2);
+    border: 1px solid var(--border);
+  }
+
+  /* ── AGENT ── */
+  .agent-banner {
+    background: var(--navy);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .agent-cross { width: 32px; height: 32px; position: relative; flex-shrink: 0; }
+  .agent-cross::before, .agent-cross::after { content: ''; position: absolute; background: var(--gold); border-radius: 1px; }
+  .agent-cross::before { width: 4px; height: 32px; left: 14px; top: 0; }
+  .agent-cross::after  { width: 32px; height: 4px; top: 14px; left: 0; }
+  .agent-info .agent-name { font-size: 14px; font-weight: 500; color: var(--gold-light); }
+  .agent-info .agent-desc { font-size: 12px; color: var(--gold); margin-top: 3px; }
+
+  .mode-strip { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .mode-btn {
+    font-size: 12px;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    background: var(--surface);
+    color: var(--text2);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all .12s;
+  }
+  .mode-btn.on { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+  .mode-btn:hover:not(.on) { border-color: var(--border2); color: var(--text); }
+
+  .chat-window {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .chat-messages {
+    height: 380px;
+    overflow-y: auto;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    scroll-behavior: smooth;
+  }
+  .msg { max-width: 80%; padding: 10px 14px; border-radius: 12px; font-size: 13px; line-height: 1.6; }
+  .msg.agent  { background: var(--surface2); color: var(--text); align-self: flex-start; border-radius: 4px 12px 12px 12px; white-space: pre-wrap; }
+  .msg.user   { background: var(--navy); color: var(--gold-light); align-self: flex-end; border-radius: 12px 4px 12px 12px; }
+  .msg.loading { background: var(--surface2); color: var(--text3); align-self: flex-start; border-radius: 4px 12px 12px 12px; font-style: italic; }
+
+  .quick-prompts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 10px 14px;
+    border-top: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .qp {
+    font-size: 11px;
+    padding: 5px 11px;
+    border: 1px solid var(--border2);
+    border-radius: 100px;
+    background: var(--surface);
+    color: var(--text2);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background .1s, color .1s;
+  }
+  .qp:hover { background: var(--navy); color: var(--gold-light); border-color: var(--navy); }
+
+  .chat-input-row {
+    display: flex;
+    gap: 8px;
+    padding: 12px 14px;
+    border-top: 1px solid var(--border);
+  }
+  .chat-input-row textarea {
+    flex: 1;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 9px 13px;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    resize: none;
+    outline: none;
+    transition: border-color .15s;
+  }
+  .chat-input-row textarea:focus { border-color: var(--gold); }
+  .send-btn {
+    background: var(--navy);
+    color: var(--gold);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 9px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    white-space: nowrap;
+    transition: opacity .15s;
+  }
+  .send-btn:hover { opacity: .88; }
+  .send-btn:disabled { opacity: .4; cursor: not-allowed; }
+
+  /* ── UPLOAD ── */
+  .upload-zone {
+    border: 2px dashed var(--border2);
+    border-radius: var(--radius);
+    padding: 3rem 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+    background: var(--surface);
+    margin-bottom: 1.5rem;
+  }
+  .upload-zone:hover, .upload-zone.drag { border-color: var(--gold); background: #f5e6c008; }
+  .upload-icon {
+    width: 48px; height: 48px;
+    background: var(--surface2);
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+  .upload-title { font-family: 'Lora', serif; font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 5px; }
+  .upload-sub   { font-size: 12px; color: var(--text2); margin-bottom: 16px; }
+  .upload-btn {
+    background: var(--navy);
+    color: var(--gold);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 8px 22px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .upload-btn:hover { opacity: .88; }
+
+  .files-list { display: flex; flex-direction: column; gap: 8px; }
+  .file-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .file-icon {
+    width: 34px; height: 34px;
+    background: var(--navy);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+  .file-name { font-size: 13px; font-weight: 500; color: var(--text); }
+  .file-meta { font-size: 11px; color: var(--text3); margin-top: 1px; }
+  .file-badge { margin-left: auto; font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 100px; background: #e6f5ed; color: #2d7a4f; }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    text-align: center;
+    padding: 2rem;
+    font-size: 12px;
+    color: var(--text3);
+    border-top: 1px solid var(--border);
+    margin-top: 2rem;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .site-header { padding: 0 1rem; }
+    .header-stats { display: none; }
+    .main-nav { padding: 0 0.5rem; overflow-x: auto; }
+    .page { padding: 1rem; }
+    .t-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="logo">
+    <div class="cross"></div>
+    <div class="logo-text">
+      <div class="name">Church of the Living God</div>
+      <div class="sub">Atlanta, GA · Teaching Vault</div>
+    </div>
+  </div>
+  <div class="header-stats">
+    <div class="hstat"><div class="hstat-n" id="totalCount">4</div><div class="hstat-l">Teachings</div></div>
+    <div class="hstat"><div class="hstat-n">3</div><div class="hstat-l">Series</div></div>
+    <div class="hstat"><div class="hstat-n">13</div><div class="hstat-l">Pillars</div></div>
+  </div>
+</header>
+
+<nav class="main-nav">
+  <button class="nav-btn active" onclick="showPage('library', this)">Library</button>
+  <button class="nav-btn" onclick="showPage('blueprint', this)">Kingdom Blueprint Series</button>
+  <button class="nav-btn" onclick="showPage('agent', this)">Teaching Agent</button>
+  <button class="nav-btn" onclick="showPage('upload', this)">Upload</button>
+</nav>
+
+<!-- ══════════════ LIBRARY ══════════════ -->
+<div id="page-library" class="page active">
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search teachings, topics, scripture references..." oninput="filterTeachings()">
+  </div>
+  <div class="filter-strip" id="filterStrip"></div>
+  <div class="t-grid" id="teachingsGrid"></div>
+  <div class="detail-panel" id="detailPanel">
+    <div class="detail-hdr">
+      <div>
+        <div class="detail-series" id="detailSeries"></div>
+        <div class="detail-title" id="detailTitle"></div>
+      </div>
+      <button class="close-btn" onclick="closeDetail()">✕</button>
+    </div>
+    <div class="detail-body" id="detailBody"></div>
+    <div class="note-section">
+      <div class="note-label">Pastor notes</div>
+      <textarea class="note-area" id="noteArea" placeholder="Add your personal notes, sermon applications, or highlights for this teaching..."></textarea>
+      <button class="save-note" onclick="saveNote()">Save note</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ KINGDOM BLUEPRINT ══════════════ -->
+<div id="page-blueprint" class="page">
+  <div class="kbs-part">
+    <div class="kbs-part-title">Prayer Series</div>
+    <div class="kbs-grid">
+      <div class="kbs-card done">
+        <div class="kbs-num">Book 1 · Complete</div>
+        <div class="kbs-name">The Posture of Prayer</div>
+        <span class="kbs-badge b-done">Complete</span>
+      </div>
+      <div class="kbs-card done">
+        <div class="kbs-num">Book 2 · Complete</div>
+        <div class="kbs-name">The Authority of Prayer</div>
+        <span class="kbs-badge b-done">Complete</span>
+      </div>
+      <div class="kbs-card planned">
+        <div class="kbs-num">Book 3 · Planned</div>
+        <div class="kbs-name">The Language of Prayer</div>
+        <span class="kbs-badge b-plan">Planned</span>
+        <button class="gen-btn" onclick="goGenerate('Write a complete teaching outline for Book 3 of the Kingdom Blueprint Series: The Language of Prayer — how decrees, declarations, intercession, and tongues function as Kingdom speech. Include introduction, at least 4 lessons with KJV scriptures, teaching points, and conclusion. Apostolic tone for Church of the Living God, Atlanta.')">Generate with agent →</button>
+      </div>
+      <div class="kbs-card planned">
+        <div class="kbs-num">Book 4 · Planned</div>
+        <div class="kbs-name">The Warfare of Prayer</div>
+        <span class="kbs-badge b-plan">Planned</span>
+        <button class="gen-btn" onclick="goGenerate('Write a complete teaching outline for Book 4 of the Kingdom Blueprint Series: The Warfare of Prayer — spiritual combat, pulling down strongholds, angelic enforcement, and prayer as military action. KJV scriptures. Apostolic, prophetic tone for Church of the Living God, Atlanta.')">Generate with agent →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="kbs-part">
+    <div class="kbs-part-title">Praise & Worship Series</div>
+    <div class="kbs-grid">
+      <div class="kbs-card done">
+        <div class="kbs-num">Book 1 · Complete</div>
+        <div class="kbs-name">The Art of Praise</div>
+        <span class="kbs-badge b-done">Complete</span>
+      </div>
+      <div class="kbs-card planned">
+        <div class="kbs-num">Book 2 · Planned</div>
+        <div class="kbs-name">The Art of Worship</div>
+        <span class="kbs-badge b-plan">Planned</span>
+        <button class="gen-btn" onclick="goGenerate('Write a complete teaching outline for: The Art of Worship — going deeper than praise into surrender, the tabernacle worship pattern, living as a worshipper, and the throne room experience. Include introduction, 3–4 lessons, KJV scriptures, teaching points. Apostolic tone for Church of the Living God, Atlanta.')">Generate with agent →</button>
+      </div>
+      <div class="kbs-card planned">
+        <div class="kbs-num">Book 3 · Planned</div>
+        <div class="kbs-name">The Art of Intercession</div>
+        <span class="kbs-badge b-plan">Planned</span>
+        <button class="gen-btn" onclick="goGenerate('Write a complete teaching outline for: The Art of Intercession — standing in the gap, prophetic intercession, travail, priestly ministry, and intercessory warfare. KJV scriptures. Apostolic tone for Church of the Living God, Atlanta.')">Generate with agent →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="kbs-part">
+    <div class="kbs-part-title">Kingdom Foundations Series</div>
+    <div class="kbs-grid">
+      <div class="kbs-card done">
+        <div class="kbs-num">Foundation · Complete</div>
+        <div class="kbs-name">The 13 Doctrinal Pillars</div>
+        <span class="kbs-badge b-done">Complete</span>
+      </div>
+      <div class="kbs-card planned">
+        <div class="kbs-num">Book 1 · Planned</div>
+        <div class="kbs-name">Kingdom Identity</div>
+        <span class="kbs-badge b-plan">Planned</span>
+        <button class="gen-btn" onclick="goGenerate('Write a complete teaching outline for: Kingdom Identity — who you are in Christ as a king and priest, royal priesthood, sonship, Kingdom citizenship, and identity versus religion. KJV scriptures. Apostolic tone for Church of the Living God, Atlanta.')">Generate with agent →</button>
+      </div>
+      <div class="kbs-card planned">
+        <div class="kbs-num">Book 2 · Planned</div>
+        <div class="kbs-name">Kingdom Culture</div>
+        <span class="kbs-badge b-plan">Planned</span>
+        <button class="gen-btn" onclick="goGenerate('Write a complete teaching outline for: Kingdom Culture — the culture of Heaven versus the culture of the world, holiness as a lifestyle, consecration, and the standard of living for the saints. KJV scriptures. Apostolic tone for Church of the Living God, Atlanta.')">Generate with agent →</button>
+      </div>
+      <div class="kbs-card planned">
+        <div class="kbs-num">Book 3 · Planned</div>
+        <div class="kbs-name">Kingdom Economics</div>
+        <span class="kbs-badge b-plan">Planned</span>
+        <button class="gen-btn" onclick="goGenerate('Write a complete teaching outline for: Kingdom Economics — biblical stewardship, tithing, first fruits, covenant provision, financial authority, and the believer\'s relationship with wealth. KJV scriptures. Apostolic tone for Church of the Living God, Atlanta.')">Generate with agent →</button>
+      </div>
+      <div class="kbs-card planned">
+        <div class="kbs-num">Book 4 · Planned</div>
+        <div class="kbs-name">Kingdom Government</div>
+        <span class="kbs-badge b-plan">Planned</span>
+        <button class="gen-btn" onclick="goGenerate('Write a complete teaching outline for: Kingdom Government — divine order in the church, fivefold ministry, spiritual authority, submission and accountability, and how Kingdom leaders govern. KJV scriptures. Apostolic tone for Church of the Living God, Atlanta.')">Generate with agent →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="kbs-hint">
+    Click "Generate with agent" on any planned teaching to have the Teaching Agent draft a complete outline. You can then upload it to the library and continue building your vault.
+  </div>
+</div>
+
+<!-- ══════════════ AGENT ══════════════ -->
+<div id="page-agent" class="page">
+  <div class="agent-banner">
+    <div class="agent-cross"></div>
+    <div class="agent-info">
+      <div class="agent-name">Kingdom Teaching Agent — Church of the Living God, Atlanta</div>
+      <div class="agent-desc">Creates full teachings · Completes the Kingdom Blueprint Series · Breaks down doctrine · Builds study guides · Suggests KJV scriptures</div>
+    </div>
+  </div>
+
+  <div class="mode-strip">
+    <button class="mode-btn on" onclick="setMode('chat', this)">Open chat</button>
+    <button class="mode-btn" onclick="setMode('create', this)">Create a teaching</button>
+    <button class="mode-btn" onclick="setMode('breakdown', this)">Break down a doctrine</button>
+    <button class="mode-btn" onclick="setMode('study', this)">Study guide</button>
+    <button class="mode-btn" onclick="setMode('series', this)">Finish Kingdom Blueprint</button>
+  </div>
+
+  <div class="chat-window">
+    <div class="chat-messages" id="chatMessages">
+      <div class="msg agent">Peace and blessings in the name of Jesus! I am the Teaching Agent for Church of the Living God, Atlanta, GA.
+
+I can help you:
+· Create brand new, full teachings from scratch
+· Write the next books in the Kingdom Blueprint Series
+· Break down any doctrine at any level
+· Build sermon outlines and study guides
+· Suggest and organize KJV scriptures by theme
+· Expand or deepen any existing teaching
+
+How can I serve the vision today?</div>
+    </div>
+    <div class="quick-prompts" id="quickPrompts"></div>
+    <div class="chat-input-row">
+      <textarea id="chatInput" rows="2" placeholder="Ask me to create a teaching, complete the Kingdom Blueprint Series, build a study guide, or suggest scriptures..."></textarea>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ UPLOAD ══════════════ -->
+<div id="page-upload" class="page">
+  <div class="section-label">Upload a new teaching</div>
+  <div class="upload-zone" id="uploadZone"
+       onclick="document.getElementById('fileInput').click()"
+       ondragover="handleDragOver(event)"
+       ondragleave="handleDragLeave()"
+       ondrop="handleDrop(event)">
+    <div class="upload-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8a8078" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M16 8l-4-4-4 4M12 4v12"/>
+      </svg>
+    </div>
+    <div class="upload-title">Add a teaching to the vault</div>
+    <div class="upload-sub">Drag and drop a .docx, .pdf, or .txt file, or click to browse</div>
+    <button class="upload-btn" onclick="event.stopPropagation(); document.getElementById('fileInput').click()">Choose file</button>
+    <input type="file" id="fileInput" accept=".docx,.pdf,.txt" style="display:none" onchange="handleFileSelect(event)">
+  </div>
+
+  <div class="section-label">Saved teachings</div>
+  <div class="files-list" id="filesList"></div>
+</div>
+
+<footer class="site-footer">
+  Church of the Living God, Atlanta, GA · Teaching Vault · Built for the Kingdom
+</footer>
+
+<script>
+// ══════ DATA ══════
+const teachings = [
+  {
+    id: 1,
+    series: "Kingdom Blueprint Series · Book 2",
+    title: "The Authority of Prayer",
+    subtitle: "Kingdom Legislation for Earthly Dominion",
+    desc: "Prayer is Heaven's governmental system — the divine method by which kings and priests legislate God's will on earth.",
+    tags: ["Prayer","Kingdom","Apostolic","Governance","Warfare"],
+    content: [
+      { type: "h", text: "Preface — born to reign" },
+      { type: "p", text: "Before there was worship, there was authority. Before there was the Church, there was dominion. In the beginning, God created man not as a servant, but as a governor — a priest and king whose words shaped the environment and whose obedience maintained Heaven's alignment on earth." },
+      { type: "p", text: "When Adam fell, he did not lose a song; he lost a seat. He surrendered a throne. Prayer, therefore, is not man's invention to communicate with God — it is Heaven's restoration plan to return man to his rightful seat of dominion. Through prayer, authority is reborn." },
+      { type: "s", text: '"Heaven moves at the speed of your submission."' },
+      { type: "h", text: "Core revelation" },
+      { type: "p", text: "Many believers treat prayer as begging for divine sympathy rather than executing divine legislation. True prayer is not a cry of weakness — it is the exercise of authority. It is the courtroom of Heaven, where decrees are released, verdicts are executed, and destinies are legislated. Prayer is not passive — it is governmental." },
+      { type: "p", text: "God is calling forth a generation that will no longer approach His throne as slaves seeking relief, but as sons executing rulership. Kings legislate. Priests intercede. Together they establish Heaven's order on earth." },
+      { type: "h", text: "Book structure" },
+      { type: "p", text: "Part I: The Foundation of Authority — the believer's legal and spiritual right to command through prayer. Part II: The Government of Heaven — divine order, courtroom protocol, and spiritual rank. Part III: Dimensions of Prayer — communion, intercession, decree, and travail. Part IV: Prayer as Warfare — angels, altars, binding, and decrees. Part V: Building a Life of Authority — consecration and sustained Kingdom power." },
+      { type: "h", text: "Chapter-by-chapter blueprint" },
+      { type: "p", text: "Ch. 1: Born to Reign — Eden's blueprint, how prayer restores what Adam lost. Ch. 2: The Legal Nature of Prayer — Heaven's courtroom system (Isaiah 43:26), decrees, petitions, verdicts. Ch. 3: Throne Room Protocol — priestly order of Melchizedek, garments of righteousness. Ch. 4: Spiritual Jurisdiction and Rank — praying within your metron, submission precedes power. Ch. 5–7: Dimensions — communion, intercession, and the command dimension (decreeing Heaven's verdict). Ch. 8–10: Prayer as Warfare — binding and loosing, angelic enforcement, breaking satanic altars. Ch. 11–13: Building a Life of Authority — consecration, watchmen prayer, commanding Kingdom outcomes." },
+      { type: "s", text: '"You were not created to survive — you were created to rule. Prayer is the seat of that rule."' }
+    ]
+  },
+  {
+    id: 2,
+    series: "Kingdom Blueprint Series · Book 1",
+    title: "The Posture of Prayer",
+    subtitle: "Teaching Manual — 4 Modules",
+    desc: "Prayer is not only something we do — it is a posture that trains spiritual capacity, endurance, and readiness for purpose.",
+    tags: ["Prayer","Discipleship","Formation","Leadership"],
+    content: [
+      { type: "h", text: "Module 1 — What is prayer posture?" },
+      { type: "p", text: "Most people define prayer as talking to God, but the Bible often defines it as coming to God and drawing near to God. Prayer posture is not about how spiritual the words sound — it is about whether the heart is actually moving toward God. Just as physical posture adjusts to how you sit and move every day, spiritual posture adjusts to how you regularly approach God." },
+      { type: "s", text: '"Draw nigh to God, and he will draw nigh to you." — James 4:8 (KJV)' },
+      { type: "p", text: "Core ideas: Prayer begins with approach, not speech. Your approach to God is trained by repetition. Approach trains dependence and spiritual capacity. Over time, shallow prayer posture produces limited discernment and spiritual fatigue. Intentional approach trains sensitivity, obedience, and authority." },
+      { type: "h", text: "Module 2 — How posture is built daily" },
+      { type: "p", text: "Comfort posture vs. contending posture. What we avoid in prayer we weaken in life. Contending prayer — staying engaged when answers are delayed, emotions are heavy, and obedience is costly — builds endurance and authority. Busyness often replaces attentiveness, and drift changes leadership before it changes beliefs." },
+      { type: "s", text: '"If thou faint in the day of adversity, thy strength is small." — Proverbs 24:10 (KJV)' },
+      { type: "h", text: "Module 3 — Posture under responsibility" },
+      { type: "p", text: "Spiritual weight comes from consistent alignment. As responsibility increases, problems become heavier and decisions affect more people. Prayer posture shapes how decisions are made under pressure. Without prayer posture, fear replaces faith. Weak posture leads to fighting people instead of problems." },
+      { type: "s", text: '"The effectual fervent prayer of a righteous man availeth much." — James 5:16 (KJV)' },
+      { type: "h", text: "Module 4 — Posture and purpose" },
+      { type: "p", text: "God values formation more than visibility. Promotion without posture creates invisible pressure — anxiety, moral compromise, and burnout. Prayer posture during seasons of waiting builds emotional and spiritual maturity. Burnout is often spiritual depletion. Renewal is necessary for sustainable service. Aligned lives witness naturally." },
+      { type: "s", text: '"Humble yourselves… that he may exalt you in due time." — 1 Peter 5:6 (KJV)' }
+    ]
+  },
+  {
+    id: 3,
+    series: "Praise & Worship Study",
+    title: "The Art of Praise",
+    subtitle: "Daniel, David & Job — 15 Principles",
+    desc: "Three men who each mastered a different dimension of praise — persistent, expressive, and sacrificial. 4 lessons, 15 principles.",
+    tags: ["Praise","Worship","Daniel","David","Job","Warfare"],
+    content: [
+      { type: "h", text: "Introduction" },
+      { type: "p", text: "Praise is more than a song — it is the believer's lifeline. We call it an 'art' because, like any art, praise is practiced, expressed in many forms, and developed into skill. Praise is also warfare, deliverance, strength, and transformation." },
+      { type: "s", text: '"Enter into his gates with thanksgiving, and into his courts with praise." — Psalm 100:4 (KJV)' },
+      { type: "h", text: "Lesson 1 — Daniel: Persistent praise in warfare (5 principles)" },
+      { type: "p", text: "Principle 1: Praise is Posture — Daniel kneeled three times daily, facing Jerusalem. Habit, not reaction. Principle 2: Praise is Power in Words — the angel came 'because of your words' (Daniel 10:12). Principle 3: Praise is Warfare — Daniel's devotion stirred battles in heaven; Michael was released (Daniel 10:13). Principle 4: Praise Sustains in Delay — 21 days of waiting, words heard on day one. Principle 5: Praise Transforms the Praiser — Daniel was strengthened in God's presence (Daniel 10:18–19)." },
+      { type: "h", text: "Lesson 2 — David: Expressive praise in presence (5 principles)" },
+      { type: "p", text: "Principle 6: Praise is Creative — David birthed new songs and worship structures. Principle 7: Praise is Honest — raw lament poured into worship (Psalm 13, 51). Principle 8: Praise Invites God's Presence — God inhabits praise (Psalm 22:3); David's harp drove out evil spirits. Principle 9: Praise is Overflow — dancing with all his might (2 Samuel 6:14). Principle 10: Praise Prepares for Victory — before Goliath, David declared God's deliverance." },
+      { type: "h", text: "Lesson 3 — Job: Sacrificial worship in suffering (5 principles)" },
+      { type: "p", text: "Principle 11: Praise Begins with Surrender — Job worshipped after loss (Job 1:20–21). Principle 12: Praise is Costly — loyalty through pain silences the enemy. Principle 13: Praise Speaks Truth in Suffering — 'I know that my Redeemer lives' (Job 19:25). Principle 14: Praise is a Path to Revelation — suffering opened direct encounter with God (Job 38). Principle 15: Praise Restores the Worshipper — Job prayed for his accusers; restoration followed (Job 42:10–12)." },
+      { type: "h", text: "Lesson 4 — Praise in practice: hearing God and waging warfare" },
+      { type: "p", text: "5-step battle plan: Step 1 — Thanksgiving breaks the gate (Psalm 100:4). Step 2 — Praise releases angelic forces (Psalm 22:3; Daniel 10:12; 2 Chronicles 20:22). Step 3 — Worship establishes the throne room (John 4:23–24). Step 4 — Waiting endures warfare (Daniel 10:13; Habakkuk 2:1). Step 5 — Obedience seals the victory (John 14:21; Daniel 6:10)." },
+      { type: "s", text: '"When they began to sing and to praise, the Lord set ambushments against the children of Ammon…" — 2 Chronicles 20:22 (KJV)' }
+    ]
+  },
+  {
+    id: 4,
+    series: "Church of the Living God, Atlanta — Foundation",
+    title: "The 13 Doctrinal Pillars",
+    subtitle: "Church of the Living God, Atlanta",
+    desc: "The complete foundational doctrinal framework — from the Word of God and Oneness to the New Heaven and New Earth.",
+    tags: ["Doctrine","Foundation","Oneness","Holiness","Salvation","Theology"],
+    content: [
+      { type: "h", text: "Pillar I — The Word of God (Foundation of Truth)" },
+      { type: "s", text: '"All scripture is given by inspiration of God, and is profitable for doctrine, for reproof, for correction, for instruction in righteousness." — 2 Timothy 3:16–17 (KJV)' },
+      { type: "p", text: "Scripture — every line — is breathed by God. The Word is not optional guidance but the living law of life and holiness. Leaders must guard the pulpit from opinions and uphold the Word as final authority." },
+      { type: "h", text: "Pillar II — The Godhead (Oneness of God in Christ Jesus)" },
+      { type: "s", text: '"For in him dwelleth all the fulness of the Godhead bodily." — Colossians 2:9 (KJV)' },
+      { type: "p", text: "The Father, Son, and Holy Ghost are not separate beings but one God revealed through different manifestations. The oneness message protects the Church from confusion and produces unity and purity in doctrine." },
+      { type: "h", text: "Pillar III — The Name of Jesus (Power and Salvation)" },
+      { type: "s", text: '"Neither is there salvation in any other: for there is none other name under heaven given among men, whereby we must be saved." — Acts 4:12 (KJV)' },
+      { type: "h", text: "Pillar IV — Salvation (Repentance, Baptism & Holy Ghost)" },
+      { type: "s", text: '"Repent, and be baptized every one of you in the name of Jesus Christ for the remission of sins, and ye shall receive the gift of the Holy Ghost." — Acts 2:38 (KJV)' },
+      { type: "h", text: "Pillars V–XIII (Summary)" },
+      { type: "p", text: "V: The Holy Spirit — infilling, power, speaking in tongues. VI: Holiness — the standard of living for the saints; modesty, purity, separation. VII: The Sabbath — covenant rest and obedience to God's commandments. VIII: Prayer, Fasting, and Consecration — private devotion fuels public power. IX: The Church — the body of Christ, divine order, apostles' doctrine. X: The Ministry — fivefold leadership, spiritual gifts, stewardship not ownership. XI: The Return of Christ — hope that drives purity and evangelism. XII: The Final Judgment — grace and accountability, eternity as motivation. XIII: The New Heaven and New Earth — eternal glory, the beginning of forever." }
+    ]
+  }
+];
+
+const allTags = [...new Set(teachings.flatMap(t => t.tags))];
+let activeTag = null, activeDetailId = null, chatHistory = [], agentMode = 'chat';
+const notes = {};
+
+const savedFiles = [
+  { name: "The_Art_of_Praise.docx", type: "DOCX", date: "Uploaded" },
+  { name: "Posture_of_Prayer.docx", type: "DOCX", date: "Uploaded" },
+  { name: "The_Authority_of_Prayer.docx", type: "DOCX", date: "Uploaded" },
+  { name: "The_13_Doctrinal_Pillars.docx", type: "DOCX", date: "Uploaded" }
+];
+
+const SYSTEM_PROMPT = `You are the Kingdom Teaching Agent for Church of the Living God, Atlanta, GA. You serve a pastor who is building a teaching ministry and church. You are a deeply knowledgeable expert in Apostolic, Oneness Pentecostal, and Kingdom theology.
+
+EXISTING TEACHINGS IN THE VAULT:
+1. "The Authority of Prayer" (Book 2, Kingdom Blueprint Series) — prayer as Kingdom legislation, governmental prayer, kings and priests, the courtroom of Heaven, binding and loosing, angelic enforcement
+2. "The Posture of Prayer" (Book 1, Kingdom Blueprint Series) — how approach to God trains spiritual capacity over time, 4 modules covering posture formation, daily habits, responsibility, and purpose
+3. "The Art of Praise" — 4 lessons, 15 principles from Daniel (persistent praise), David (expressive praise), and Job (sacrificial worship), plus a 5-step practical warfare battle plan
+4. "The 13 Doctrinal Pillars of the Church of the Living God, Atlanta" — Word, Godhead (Oneness), Name of Jesus, Salvation (Acts 2:38), Holy Ghost, Holiness, Sabbath, Prayer/Fasting, The Church, Ministry, Return of Christ, Final Judgment, New Heaven/Earth
+
+THE KINGDOM BLUEPRINT SERIES (in development):
+- Book 1: The Posture of Prayer (COMPLETE)
+- Book 2: The Authority of Prayer (COMPLETE)
+- Planned: The Language of Prayer, The Warfare of Prayer
+- Praise Series: The Art of Praise (COMPLETE), The Art of Worship, The Art of Intercession (PLANNED)
+- Foundations Series: 13 Doctrinal Pillars (COMPLETE), Kingdom Identity, Kingdom Culture, Kingdom Economics, Kingdom Government (PLANNED)
+
+YOUR CAPABILITIES:
+- CREATE full, structured teachings with introduction, lessons/modules, KJV scriptures, teaching points, application sections, discussion questions, and conclusion
+- WRITE the next books in the Kingdom Blueprint Series — full outlines or complete content
+- BUILD sermon outlines (3-point, expository, topical, prophetic)
+- GENERATE study guides (4–13 weeks) with weekly topics, scripture readings, and discussion questions
+- BREAK DOWN any doctrine at beginner, intermediate, and advanced levels
+- SUGGEST and ORGANIZE KJV scriptures by theme
+- EXPAND or DEEPEN any existing teaching
+- DRAFT declaration prayers, application sections, and activation exercises
+
+ALWAYS:
+- Use KJV scripture references exclusively unless the user specifies otherwise
+- Maintain an Apostolic, prophetic, and doctrinally sound tone fitting Church of the Living God, Atlanta
+- Organize clearly with section headers, scripture references, and teaching points
+- Be thorough — when asked to create a teaching, produce substantial, usable content
+- Honor the Oneness Pentecostal doctrine (Acts 2:38 salvation, oneness of the Godhead, holiness standard)`;
+
+// ══════ NAVIGATION ══════
+function showPage(name, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ══════ LIBRARY ══════
+function buildFilterStrip() {
+  const strip = document.getElementById('filterStrip');
+  strip.innerHTML = '<button class="fchip on" onclick="filterTag(null, this)">All</button>' +
+    allTags.map(t => `<button class="fchip" onclick="filterTag('${t}', this)">${t}</button>`).join('');
+}
+
+function filterTag(tag, btn) {
+  activeTag = tag;
+  document.querySelectorAll('.fchip').forEach(c => c.classList.remove('on'));
+  btn.classList.add('on');
+  filterTeachings();
+}
+
+function filterTeachings() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const grid = document.getElementById('teachingsGrid');
+  const filtered = teachings.filter(t => {
+    const matchTag = !activeTag || t.tags.includes(activeTag);
+    const matchQ = !q || [t.title, t.desc, ...t.tags, ...t.content.map(c => c.text || '')].join(' ').toLowerCase().includes(q);
+    return matchTag && matchQ;
+  });
+  grid.innerHTML = filtered.map(t => `
+    <div class="tcard ${activeDetailId === t.id ? 'selected' : ''}" id="tc-${t.id}" onclick="showDetail(${t.id})">
+      <div class="tcard-accent"></div>
+      <div class="tcard-series">${t.series}</div>
+      <div class="tcard-title">${t.title}</div>
+      <div class="tcard-desc">${t.desc}</div>
+      <div class="tcard-tags">${t.tags.map(tg => `<span class="tag">${tg}</span>`).join('')}</div>
+      <div class="tcard-foot">
+        ${notes[t.id] ? '<span class="note-saved-badge">Note saved</span>' : '<span></span>'}
+        <button class="view-link">View teaching →</button>
+      </div>
+    </div>`).join('');
+  document.getElementById('totalCount').textContent = teachings.length + Math.max(0, savedFiles.length - 4);
+}
+
+function showDetail(id) {
+  const t = teachings.find(x => x.id === id);
+  activeDetailId = id;
+  document.getElementById('detailSeries').textContent = t.series;
+  document.getElementById('detailTitle').textContent = t.title + (t.subtitle ? ' — ' + t.subtitle : '');
+  let html = '';
+  t.content.forEach(c => {
+    if (c.type === 'h') html += `<h3>${c.text}</h3>`;
+    else if (c.type === 'p') html += `<p>${c.text}</p>`;
+    else if (c.type === 's') html += `<div class="scripture-block">${c.text}</div>`;
+  });
+  document.getElementById('detailBody').innerHTML = html;
+  document.getElementById('noteArea').value = notes[id] || '';
+  const panel = document.getElementById('detailPanel');
+  panel.classList.add('active');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  filterTeachings();
+}
+
+function closeDetail() {
+  document.getElementById('detailPanel').classList.remove('active');
+  activeDetailId = null;
+  filterTeachings();
+}
+
+function saveNote() {
+  if (!activeDetailId) return;
+  notes[activeDetailId] = document.getElementById('noteArea').value;
+  filterTeachings();
+  const btn = document.querySelector('.save-note');
+  const orig = btn.textContent;
+  btn.textContent = 'Saved!';
+  setTimeout(() => btn.textContent = orig, 1500);
+}
+
+// ══════ AGENT ══════
+const modeConfigs = {
+  chat: {
+    ph: 'Ask anything — create teachings, complete the Kingdom Blueprint Series, build outlines, suggest scriptures...',
+    qps: [
+      ['Create: Fear of the Lord', 'Create a complete teaching outline on The Fear of the Lord for Church of the Living God, Atlanta. Include introduction, 3 lessons with KJV scriptures, application, and conclusion. Apostolic tone.'],
+      ['Next Kingdom Blueprint book', 'Write a complete outline for the next book in the Kingdom Blueprint Series: The Language of Prayer — decrees, declarations, intercession as Kingdom speech. Apostolic, KJV.'],
+      ['Break down: Oneness for new converts', 'Break down the Oneness of God doctrine for a new convert in simple, clear language with KJV scriptures. Church of the Living God, Atlanta.'],
+      ['4-week study: Authority of Prayer', 'Create a 4-week small group study guide for The Authority of Prayer teaching. Weekly topics, KJV scriptures, and discussion questions.'],
+      ['KJV scriptures on holiness', 'List and organize the most important KJV scriptures on holiness and consecration, with brief teaching notes for each.']
+    ]
+  },
+  create: {
+    ph: 'Describe the teaching you want to create — topic, audience, or key scriptures...',
+    qps: [
+      ['Full teaching: Holiness', 'Create a complete, fully-developed teaching on Holiness for Church of the Living God, Atlanta. Introduction, 3 lessons, KJV scriptures, teaching points, application, discussion questions, and conclusion. Apostolic tone.'],
+      ['Full teaching: The Blood of Jesus', 'Create a complete teaching on The Power of the Blood of Jesus — covenant, covering, healing, and cleansing. Introduction, 3 lessons, KJV scriptures. Apostolic tone, Church of the Living God Atlanta.'],
+      ['Full teaching: The Fear of the Lord', 'Create a complete teaching on The Fear of the Lord — what it means, why it matters, and how it produces wisdom and holiness. KJV scriptures. Apostolic tone for Church of the Living God Atlanta.'],
+      ['Full teaching: Faith & Action', 'Create a complete teaching on Faith and Action — how living faith produces results, moves mountains, and aligns with Kingdom authority. KJV. Apostolic tone for Church of the Living God Atlanta.']
+    ]
+  },
+  breakdown: {
+    ph: 'Enter a doctrine or topic to break down at beginner, intermediate, and advanced levels...',
+    qps: [
+      ['Break down: Repentance', 'Break down the doctrine of Repentance for beginner, intermediate, and advanced saints at Church of the Living God, Atlanta. Define it, give KJV scriptures, and practical application for each level.'],
+      ['Break down: Water Baptism in Jesus Name', 'Break down Water Baptism in Jesus Name — why Jesus Name only, how it differs from trinitarian baptism, biblical basis (Matthew 28:19 vs Acts 2:38). Beginner to advanced. Apostolic KJV.'],
+      ['Break down: The Holy Ghost', 'Break down receiving the Holy Ghost with the initial evidence of speaking in tongues — biblical, doctrinal, and practical. Beginner to advanced. Apostolic KJV for Church of the Living God Atlanta.'],
+      ['Break down: The Sabbath', 'Break down the commandment-keeping Sabbath doctrine for Church of the Living God, Atlanta — why Saturday, what to do, what to avoid, and its covenant significance. KJV. All levels.']
+    ]
+  },
+  study: {
+    ph: 'Describe what study guide you need — topic, number of weeks, or based on an existing teaching...',
+    qps: [
+      ['Study guide: Posture of Prayer', 'Create a 4-week small group study guide for The Posture of Prayer teaching. Each week: theme, KJV scriptures to read, teaching summary, discussion questions, and weekly practice.'],
+      ['Study guide: Art of Praise', 'Create a 4-week study guide for The Art of Praise. Weekly themes from Daniel, David, and Job. Discussion questions, scripture readings, and practical exercises each week.'],
+      ['Study guide: 13 Doctrinal Pillars', 'Create a 13-week study guide for The 13 Doctrinal Pillars of Church of the Living God, Atlanta. One pillar per week — KJV scriptures, key teaching points, and discussion questions.'],
+      ['New Converts class — 6 weeks', 'Create a 6-week New Converts Class curriculum for Church of the Living God, Atlanta. Covering salvation (Acts 2:38), the Oneness of God, holiness, prayer, the Church, and Kingdom living. KJV scriptures throughout.']
+    ]
+  },
+  series: {
+    ph: 'Ask me to write or outline any planned book in the Kingdom Blueprint Series...',
+    qps: [
+      ['Write: The Language of Prayer', 'Write a complete, substantial teaching outline for Book 3 of the Kingdom Blueprint Series: The Language of Prayer — how decrees, declarations, intercession, and speaking in tongues function as Kingdom governmental speech. Introduction, 4 lessons, KJV scriptures, teaching points, application. Apostolic tone for Church of the Living God, Atlanta.'],
+      ['Write: The Art of Worship', 'Write a complete teaching outline for: The Art of Worship — going deeper than praise into surrender, the tabernacle worship pattern, and living as a full-time worshipper. 3 lessons with KJV scriptures. Apostolic tone for Church of the Living God Atlanta.'],
+      ['Write: Kingdom Identity', 'Write a complete teaching outline for: Kingdom Identity — who you are in Christ as a king and priest, royal priesthood, sonship, and identity versus religious performance. 3 lessons, KJV scriptures. Apostolic tone.'],
+      ['Write: Kingdom Culture', 'Write a complete teaching outline for: Kingdom Culture — the culture of Heaven versus the culture of the world, holiness as a lifestyle, standards, and consecration. 3 lessons, KJV. Apostolic tone for Church of the Living God Atlanta.']
+    ]
+  }
+};
+
+function setMode(mode, btn) {
+  agentMode = mode;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  const cfg = modeConfigs[mode] || modeConfigs.chat;
+  document.getElementById('chatInput').placeholder = cfg.ph;
+  document.getElementById('quickPrompts').innerHTML = cfg.qps.map(([label, prompt]) =>
+    `<button class="qp" onclick="quickPrompt('${prompt.replace(/'/g, "\\'")}')">${label}</button>`
+  ).join('');
+}
+
+function quickPrompt(text) {
+  document.getElementById('chatInput').value = text;
+  sendMessage();
+}
+
+function goGenerate(prompt) {
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn')[2].classList.add('active');
+  document.getElementById('page-agent').classList.add('active');
+  setTimeout(() => {
+    document.getElementById('chatInput').value = prompt;
+    sendMessage();
+  }, 150);
+}
+
+async function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  const btn = document.getElementById('sendBtn');
+  btn.disabled = true;
+  input.value = '';
+  appendMessage(msg, 'user');
+  chatHistory.push({ role: 'user', content: msg });
+  const loader = appendMessage('Seeking the Word and preparing your teaching...', 'loading');
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: SYSTEM_PROMPT,
+        messages: chatHistory
+      })
+    });
+    const data = await resp.json();
+    const text = data.content?.map(c => c.text || '').join('') || 'Unable to retrieve a response. Please try again.';
+    loader.remove();
+    appendMessage(text, 'agent');
+    chatHistory.push({ role: 'assistant', content: text });
+    if (chatHistory.length > 24) chatHistory = chatHistory.slice(-24);
+  } catch (e) {
+    loader.remove();
+    appendMessage('There was a connection error. Please check your connection and try again.', 'agent');
+  }
+  btn.disabled = false;
+}
+
+function appendMessage(text, type) {
+  const box = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'msg ' + type;
+  div.textContent = text;
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+  return div;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('chatInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  });
+  setMode('chat', document.querySelector('.mode-btn.on'));
+});
+
+// ══════ UPLOAD ══════
+function renderFilesList() {
+  document.getElementById('filesList').innerHTML = savedFiles.map(f => `
+    <div class="file-item">
+      <div class="file-icon">${f.type}</div>
+      <div>
+        <div class="file-name">${f.name}</div>
+        <div class="file-meta">${f.date}</div>
+      </div>
+      <span class="file-badge">Saved</span>
+    </div>`).join('');
+}
+
+function handleFileSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  addFile(file);
+}
+
+function addFile(file) {
+  const ext = file.name.split('.').pop().toUpperCase();
+  savedFiles.unshift({ name: file.name, type: ext, date: 'Just now' });
+  renderFilesList();
+  alert('"' + file.name + '" has been added to the Church of the Living God, Atlanta teaching vault!');
+}
+
+function handleDragOver(e) {
+  e.preventDefault();
+  document.getElementById('uploadZone').classList.add('drag');
+}
+function handleDragLeave() {
+  document.getElementById('uploadZone').classList.remove('drag');
+}
+function handleDrop(e) {
+  e.preventDefault();
+  handleDragLeave();
+  const file = e.dataTransfer.files[0];
+  if (file) addFile(file);
+}
+
+// ══════ INIT ══════
+buildFilterStrip();
+filterTeachings();
+renderFilesList();
+</script>
+</body>
+</html>
