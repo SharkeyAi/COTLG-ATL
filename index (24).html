@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Church of the Living God, Atlanta — Teaching Vault</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--gold:#b8963e;--gold-light:#f0e4c0;--gold-dim:#7a5f20;--navy:#0f1e35;--bg:#f8f6f1;--surface:#fff;--surface2:#f2ede4;--border:#e0d8cc;--border2:#c8bfb0;--text:#1a1510;--text2:#5a5248;--text3:#8a8078;--r:12px;--rs:8px}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.site-header{background:var(--navy);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100;border-bottom:2px solid var(--gold)}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.cross{width:28px;height:28px;position:relative;flex-shrink:0}
+.cross::before,.cross::after{content:'';position:absolute;background:var(--gold);border-radius:1px}
+.cross::before{width:5px;height:28px;left:11.5px;top:0}
+.cross::after{width:28px;height:5px;top:10px;left:0}
+.logo-name{font-size:14px;font-weight:500;color:var(--gold-light)}
+.logo-sub{font-size:11px;color:var(--gold);letter-spacing:.06em;text-transform:uppercase;margin-top:1px}
+.hstats{display:flex;gap:20px}
+.hstat-n{font-size:18px;font-weight:500;color:var(--gold-light);line-height:1;text-align:center}
+.hstat-l{font-size:10px;color:var(--gold);text-transform:uppercase;letter-spacing:.05em;text-align:center}
+.main-nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;gap:0;overflow-x:auto}
+.nav-btn{padding:14px 18px;font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.nav-btn.active{color:var(--navy);border-bottom-color:var(--gold)}
+.nav-btn:hover:not(.active){color:var(--text)}
+.page{display:none;padding:2rem;max-width:1100px;margin:0 auto}
+.page.active{display:block}
+.slabel{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.slabel::after{content:'';flex:1;height:1px;background:var(--border)}
+.sbar{display:flex;gap:10px;margin-bottom:16px}
+.sbar input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:10px 16px;font-size:14px;color:var(--text);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .15s}
+.sbar input:focus{border-color:var(--gold)}
+.fstrip{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.fchip{font-size:12px;padding:5px 12px;border:1px solid var(--border);border-radius:100px;background:var(--surface);color:var(--text2);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .1s}
+.fchip.on{background:var(--navy);color:var(--gold-light);border-color:var(--navy)}
+.fchip:hover:not(.on){border-color:var(--border2);color:var(--text)}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:20px}
+.tcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;cursor:pointer;transition:border-color .15s,box-shadow .15s;position:relative;overflow:hidden}
+.tcard:hover{border-color:var(--border2);box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.tcard.sel{border:1.5px solid var(--navy)}
+.tcard-acc{position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold)}
+.tcard-ser{font-size:10px;font-weight:500;color:var(--gold-dim);text-transform:uppercase;letter-spacing:.07em;margin:10px 0 6px}
+.tcard-ttl{font-family:'Lora',serif;font-size:15px;font-weight:600;color:var(--text);margin-bottom:8px;line-height:1.4}
+.tcard-dsc{font-size:12px;color:var(--text2);line-height:1.55;margin-bottom:10px}
+.tcard-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}
+.tag{font-size:11px;padding:2px 8px;border-radius:100px;background:var(--surface2);color:var(--text2);border:1px solid var(--border)}
+.tcard-ft{display:flex;justify-content:space-between;align-items:center}
+.nsaved{font-size:11px;color:#2d7a4f;background:#e6f5ed;padding:2px 8px;border-radius:100px}
+.vlink{font-size:12px;font-weight:500;color:var(--navy);background:none;border:none;cursor:pointer;padding:0;font-family:'DM Sans',sans-serif}
+.vlink:hover{text-decoration:underline}
+.dpanel{display:none;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.75rem;margin-bottom:20px}
+.dpanel.active{display:block}
+.dhdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border)}
+.dser{font-size:11px;font-weight:500;color:var(--gold-dim);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+.dttl{font-family:'Lora',serif;font-size:22px;font-weight:600;color:var(--text);line-height:1.3}
+.xbtn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:20px;padding:4px 8px;flex-shrink:0}
+.xbtn:hover{color:var(--text)}
+.dbody{font-size:14px;line-height:1.8;color:var(--text)}
+.dbody h2{font-family:'Lora',serif;font-size:20px;font-weight:600;color:var(--navy);margin:2rem 0 1rem;padding-bottom:.5rem;border-bottom:2px solid var(--gold)}
+.dbody h3{font-family:'Lora',serif;font-size:17px;font-weight:600;color:var(--text);margin:1.5rem 0 .75rem}
+.dbody h4{font-size:13px;font-weight:600;color:var(--text2);margin:1.25rem 0 .5rem;text-transform:uppercase;letter-spacing:.05em}
+.dbody p{margin-bottom:.85rem}
+.dbody ul{padding-left:1.5rem;margin-bottom:.85rem}
+.dbody ul li{margin-bottom:.4rem}
+.dbody table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:13px}
+.dbody table th{background:var(--navy);color:var(--gold-light);padding:8px 12px;text-align:left;font-weight:500}
+.dbody table td{padding:8px 12px;border-bottom:1px solid var(--border)}
+.dbody table tr:nth-child(even) td{background:var(--surface2)}
+.scr{background:var(--surface2);border-left:3px solid var(--gold);padding:12px 16px;border-radius:0 8px 8px 0;font-size:13px;font-style:italic;font-family:'Lora',serif;margin:1rem 0;color:var(--text2);line-height:1.6}
+.nsec{margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+.nlbl{font-size:12px;font-weight:500;color:var(--text2);margin-bottom:8px}
+.narea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:10px 14px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);resize:vertical;min-height:90px;outline:none;transition:border-color .15s}
+.narea:focus{border-color:var(--gold)}
+.snbtn{margin-top:8px;font-size:12px;padding:6px 16px;border:1px solid var(--border);border-radius:var(--rs);background:var(--surface);color:var(--text);cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .1s}
+.snbtn:hover{background:var(--surface2)}
+.kpart{margin-bottom:2rem}
+.kptitle{font-family:'Lora',serif;font-size:17px;font-weight:600;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.kptitle::after{content:'';flex:1;height:1px;background:var(--border)}
+.kgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.kcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem}
+.kcard.done{border-left:4px solid #2d7a4f}
+.kcard.planned{border-left:4px solid var(--border2)}
+.knum{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px}
+.kcard.done .knum{color:#2d7a4f}
+.kcard.planned .knum{color:var(--text3)}
+.kname{font-family:'Lora',serif;font-size:14px;font-weight:600;color:var(--text);line-height:1.35;margin-bottom:8px}
+.kbadge{display:inline-block;font-size:10px;font-weight:500;padding:2px 8px;border-radius:100px;margin-bottom:8px}
+.bdone{background:#e6f5ed;color:#2d7a4f}
+.bplan{background:var(--surface2);color:var(--text3)}
+.gbtn{display:block;width:100%;margin-top:8px;font-size:11px;font-weight:500;padding:6px 10px;border:1px solid var(--navy);border-radius:var(--rs);background:transparent;color:var(--navy);cursor:pointer;font-family:'DM Sans',sans-serif;text-align:center;transition:background .12s,color .12s}
+.gbtn:hover{background:var(--navy);color:var(--gold-light)}
+.khint{background:var(--surface2);border-radius:var(--rs);padding:10px 16px;font-size:12px;color:var(--text2);border:1px solid var(--border);margin-top:1rem}
+.abanner{background:var(--navy);border-radius:var(--r);padding:1.25rem 1.5rem;display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.across{width:32px;height:32px;position:relative;flex-shrink:0}
+.across::before,.across::after{content:'';position:absolute;background:var(--gold);border-radius:1px}
+.across::before{width:4px;height:32px;left:14px;top:0}
+.across::after{width:32px;height:4px;top:14px;left:0}
+.aname{font-size:14px;font-weight:500;color:var(--gold-light)}
+.adesc{font-size:12px;color:var(--gold);margin-top:3px}
+.mstrip{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.mbtn{font-size:12px;padding:6px 14px;border:1px solid var(--border);border-radius:100px;background:var(--surface);color:var(--text2);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .12s}
+.mbtn.on{background:var(--navy);color:var(--gold-light);border-color:var(--navy)}
+.mbtn:hover:not(.on){border-color:var(--border2);color:var(--text)}
+.cwin{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.cmsgs{height:380px;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth}
+.msg{max-width:80%;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.6}
+.msg.agent{background:var(--surface2);color:var(--text);align-self:flex-start;border-radius:4px 12px 12px 12px;white-space:pre-wrap}
+.msg.user{background:var(--navy);color:var(--gold-light);align-self:flex-end;border-radius:12px 4px 12px 12px}
+.msg.loading{background:var(--surface2);color:var(--text3);align-self:flex-start;border-radius:4px 12px 12px 12px;font-style:italic}
+.qps{display:flex;flex-wrap:wrap;gap:6px;padding:10px 14px;border-top:1px solid var(--border);background:var(--surface2)}
+.qp{font-size:11px;padding:5px 11px;border:1px solid var(--border2);border-radius:100px;background:var(--surface);color:var(--text2);cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .1s,color .1s}
+.qp:hover{background:var(--navy);color:var(--gold-light);border-color:var(--navy)}
+.cinrow{display:flex;gap:8px;padding:12px 14px;border-top:1px solid var(--border)}
+.cinrow textarea{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:9px 13px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);resize:none;outline:none;transition:border-color .15s}
+.cinrow textarea:focus{border-color:var(--gold)}
+.sbtn{background:var(--navy);color:var(--gold);border:none;border-radius:var(--rs);padding:9px 20px;font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:opacity .15s}
+.sbtn:hover{opacity:.88}.sbtn:disabled{opacity:.4;cursor:not-allowed}
+.uzone{border:2px dashed var(--border2);border-radius:var(--r);padding:3rem 1.5rem;text-align:center;cursor:pointer;transition:border-color .15s,background .15s;background:var(--surface);margin-bottom:1.5rem}
+.uzone:hover,.uzone.drag{border-color:var(--gold);background:#f5e6c008}
+.uttl{font-family:'Lora',serif;font-size:16px;font-weight:600;color:var(--text);margin-bottom:5px}
+.usub{font-size:12px;color:var(--text2);margin-bottom:16px}
+.ubtn{background:var(--navy);color:var(--gold);border:none;border-radius:var(--rs);padding:8px 22px;font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif}
+.ubtn:hover{opacity:.88}
+.flist{display:flex;flex-direction:column;gap:8px}
+.fitem{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:10px 14px;display:flex;align-items:center;gap:12px}
+.fic{width:34px;height:34px;background:var(--navy);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:var(--gold);flex-shrink:0}
+.fnm{font-size:13px;font-weight:500;color:var(--text)}
+.fmt{font-size:11px;color:var(--text3);margin-top:1px}
+.fbadge{margin-left:auto;font-size:10px;font-weight:500;padding:2px 8px;border-radius:100px;background:#e6f5ed;color:#2d7a4f}
+footer{text-align:center;padding:2rem;font-size:12px;color:var(--text3);border-top:1px solid var(--border);margin-top:2rem}
+@media(max-width:640px){.site-header{padding:0 1rem}.hstats{display:none}.main-nav{padding:0 .5rem}.page{padding:1rem}.tgrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="logo">
+    <div class="cross"></div>
+    <div><div class="logo-name">Church of the Living God</div><div class="logo-sub">Atlanta, GA · Teaching Vault</div></div>
+  </div>
+  <div class="hstats">
+    <div><div class="hstat-n" id="totalCnt">4</div><div class="hstat-l">Teachings</div></div>
+    <div><div class="hstat-n">3</div><div class="hstat-l">Series</div></div>
+    <div><div class="hstat-n">13</div><div class="hstat-l">Pillars</div></div>
+  </div>
+</header>
+<nav class="main-nav">
+  <button class="nav-btn active" onclick="showPage('library',this)">Library</button>
+  <button class="nav-btn" onclick="showPage('blueprint',this)">Kingdom Blueprint Series</button>
+  <button class="nav-btn" onclick="showPage('agent',this)">Teaching Agent</button>
+  <button class="nav-btn" onclick="showPage('upload',this)">Upload</button>
+</nav>
+
+<div id="page-library" class="page active">
+  <div class="sbar"><input type="text" id="searchInput" placeholder="Search teachings, topics, scripture references..." oninput="filterT()"></div>
+  <div class="fstrip" id="fstrip"></div>
+  <div class="tgrid" id="tgrid"></div>
+  <div class="dpanel" id="dpanel">
+    <div class="dhdr">
+      <div><div class="dser" id="dser"></div><div class="dttl" id="dttl"></div></div>
+      <button class="xbtn" onclick="closeD()">✕</button>
+    </div>
+    <div class="dbody" id="dbody"></div>
+    <div class="nsec">
+      <div class="nlbl">Pastor notes</div>
+      <textarea class="narea" id="narea" placeholder="Add your personal notes, sermon applications, or highlights..."></textarea>
+      <button class="snbtn" onclick="saveNote()">Save note</button>
+    </div>
+  </div>
+</div>
+
+<div id="page-blueprint" class="page">
+  <div class="kpart"><div class="kptitle">Prayer Series</div><div class="kgrid">
+    <div class="kcard done"><div class="knum">Book 1 · Complete</div><div class="kname">The Posture of Prayer</div><span class="kbadge bdone">Complete</span></div>
+    <div class="kcard done"><div class="knum">Book 2 · Complete</div><div class="kname">The Authority of Prayer</div><span class="kbadge bdone">Complete</span></div>
+    <div class="kcard planned"><div class="knum">Book 3 · Planned</div><div class="kname">The Language of Prayer</div><span class="kbadge bplan">Planned</span><button class="gbtn" onclick="goGen('Write a complete teaching outline for Book 3 of the Kingdom Blueprint Series: The Language of Prayer — how decrees, declarations, intercession, and tongues function as Kingdom speech. Include introduction, 4 lessons with KJV scriptures, teaching points, and conclusion. Apostolic tone for Church of the Living God, Atlanta.')">Generate with agent →</button></div>
+    <div class="kcard planned"><div class="knum">Book 4 · Planned</div><div class="kname">The Warfare of Prayer</div><span class="kbadge bplan">Planned</span><button class="gbtn" onclick="goGen('Write a complete teaching outline for Book 4 of the Kingdom Blueprint Series: The Warfare of Prayer — spiritual combat, pulling down strongholds, angelic enforcement, and prayer as military action. KJV scriptures. Apostolic tone for Church of the Living God, Atlanta.')">Generate with agent →</button></div>
+  </div></div>
+  <div class="kpart"><div class="kptitle">Praise & Worship Series</div><div class="kgrid">
+    <div class="kcard done"><div class="knum">Book 1 · Complete</div><div class="kname">The Art of Praise</div><span class="kbadge bdone">Complete</span></div>
+    <div class="kcard planned"><div class="knum">Book 2 · Planned</div><div class="kname">The Art of Worship</div><span class="kbadge bplan">Planned</span><button class="gbtn" onclick="goGen('Write a complete teaching outline for: The Art of Worship — going deeper than praise into surrender, the tabernacle worship pattern, and living as a full-time worshipper. 3 lessons, KJV scriptures. Apostolic tone for Church of the Living God, Atlanta.')">Generate with agent →</button></div>
+    <div class="kcard planned"><div class="knum">Book 3 · Planned</div><div class="kname">The Art of Intercession</div><span class="kbadge bplan">Planned</span><button class="gbtn" onclick="goGen('Write a complete teaching outline for: The Art of Intercession — standing in the gap, prophetic intercession, travail, and priestly ministry. KJV scriptures. Apostolic tone for Church of the Living God, Atlanta.')">Generate with agent →</button></div>
+  </div></div>
+  <div class="kpart"><div class="kptitle">Kingdom Foundations Series</div><div class="kgrid">
+    <div class="kcard done"><div class="knum">Foundation · Complete</div><div class="kname">The 13 Doctrinal Pillars</div><span class="kbadge bdone">Complete</span></div>
+    <div class="kcard planned"><div class="knum">Book 1 · Planned</div><div class="kname">Kingdom Identity</div><span class="kbadge bplan">Planned</span><button class="gbtn" onclick="goGen('Write a complete teaching outline for: Kingdom Identity — who you are in Christ as a king and priest, royal priesthood, sonship, and Kingdom citizenship. KJV scriptures. Apostolic tone for Church of the Living God, Atlanta.')">Generate with agent →</button></div>
+    <div class="kcard planned"><div class="knum">Book 2 · Planned</div><div class="kname">Kingdom Culture</div><span class="kbadge bplan">Planned</span><button class="gbtn" onclick="goGen('Write a complete teaching outline for: Kingdom Culture — the culture of Heaven versus the culture of the world, holiness as a lifestyle, consecration, and the standard of living for the saints. KJV. Apostolic tone for Church of the Living God, Atlanta.')">Generate with agent →</button></div>
+    <div class="kcard planned"><div class="knum">Book 3 · Planned</div><div class="kname">Kingdom Economics</div><span class="kbadge bplan">Planned</span><button class="gbtn" onclick="goGen('Write a complete teaching outline for: Kingdom Economics — biblical stewardship, tithing, first fruits, covenant provision, and financial authority. KJV. Apostolic tone for Church of the Living God, Atlanta.')">Generate with agent →</button></div>
+    <div class="kcard planned"><div class="knum">Book 4 · Planned</div><div class="kname">Kingdom Government</div><span class="kbadge bplan">Planned</span><button class="gbtn" onclick="goGen('Write a complete teaching outline for: Kingdom Government — divine order in the church, fivefold ministry, spiritual authority, submission and accountability. KJV. Apostolic tone for Church of the Living God, Atlanta.')">Generate with agent →</button></div>
+  </div></div>
+  <div class="khint">Click "Generate with agent" on any planned teaching to have the Teaching Agent draft a complete outline. Upload the result to grow your library.</div>
+</div>
+
+<div id="page-agent" class="page">
+  <div class="abanner"><div class="across"></div><div><div class="aname">Kingdom Teaching Agent — Church of the Living God, Atlanta</div><div class="adesc">Creates full teachings · Completes the Kingdom Blueprint Series · Breaks down doctrine · Builds study guides · Suggests KJV scriptures</div></div></div>
+  <div class="mstrip">
+    <button class="mbtn on" onclick="setMode('chat',this)">Open chat</button>
+    <button class="mbtn" onclick="setMode('create',this)">Create a teaching</button>
+    <button class="mbtn" onclick="setMode('breakdown',this)">Break down a doctrine</button>
+    <button class="mbtn" onclick="setMode('study',this)">Study guide</button>
+    <button class="mbtn" onclick="setMode('series',this)">Finish Kingdom Blueprint</button>
+  </div>
+  <div class="cwin">
+    <div class="cmsgs" id="cmsgs"><div class="msg agent">Peace and blessings in the name of Jesus! I am the Teaching Agent for Church of the Living God, Atlanta, GA.\n\nI can help you:\n· Create brand new, full teachings from scratch\n· Write the next books in the Kingdom Blueprint Series\n· Break down any doctrine at any level\n· Build sermon outlines and study guides\n· Suggest and organize KJV scriptures by theme\n· Expand or deepen any existing teaching\n\nHow can I serve the vision today?</div></div>
+    <div class="qps" id="qps"></div>
+    <div class="cinrow"><textarea id="cin" rows="2" placeholder="Ask me to create a teaching, complete the Kingdom Blueprint Series, build a study guide, or suggest scriptures..."></textarea><button class="sbtn" id="sbtn" onclick="sendMsg()">Send</button></div>
+  </div>
+</div>
+
+<div id="page-upload" class="page">
+  <div class="slabel">Upload a new teaching</div>
+  <div class="uzone" id="uzone" onclick="document.getElementById('fi').click()" ondragover="dov(event)" ondragleave="dlv()" ondrop="ddr(event)">
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#8a8078" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:12px"><path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M16 8l-4-4-4 4M12 4v12"/></svg>
+    <div class="uttl">Add a teaching to the vault</div>
+    <div class="usub">Drag and drop a .docx, .pdf, or .txt file, or click to browse</div>
+    <button class="ubtn" onclick="event.stopPropagation();document.getElementById('fi').click()">Choose file</button>
+    <input type="file" id="fi" accept=".docx,.pdf,.txt" style="display:none" onchange="handleFile(event)">
+  </div>
+  <div class="slabel">Saved teachings</div>
+  <div class="flist" id="flist"></div>
+</div>
+
+<footer>Church of the Living God, Atlanta, GA · Teaching Vault · Built for the Kingdom</footer>
+
+<script>
+const T=[
+{id:1,series:"Kingdom Blueprint Series · Book 1",title:"The Posture of Prayer",sub:"Teaching Manual — 4 Modules",desc:"Prayer is not only something we do — it is a posture that trains spiritual capacity, endurance, and readiness for purpose. 4 modules, 12 lessons.",tags:["Prayer","Discipleship","Formation","Leadership"],html:`
+<h2>THE POSTURE OF PRAYER — Teaching Manual</h2>
+<h2>MODULE 1 — WHAT IS PRAYER POSTURE?</h2>
+<h3>Module Goal</h3>
+<p>To help believers understand that prayer is not only something we do, but a posture that trains spiritual capacity over time, and that how we consistently approach God shapes future strength, endurance, and readiness for purpose.</p>
+<h3>LESSON 1.1 — PRAYER IS ABOUT APPROACH, NOT JUST WORDS</h3>
+<h4>Core Idea 1 — Prayer Begins with Approach, Not Speech</h4>
+<p>Most people define prayer as talking to God, but the Bible often defines prayer as coming to God and drawing near to God. This matters because prayer posture begins before we ever say a word.</p>
+<div class="scr">"For he that cometh to God must believe that he is, and that he is a rewarder of them that diligently seek him." — Hebrews 11:6 (KJV)</div>
+<p>Faith in prayer is not only believing that God exists. It is believing that God is present, attentive, and responsive. That belief shapes how we approach Him.</p>
+<div class="scr">"Draw nigh to God, and he will draw nigh to you." — James 4:8 (KJV)</div>
+<p>Drawing near is intentional movement of the heart toward God. Nearness is not automatic; it is practiced. Distance can also be practiced when prayer becomes rushed, distracted, or emotionally guarded. Over time, that becomes normal posture. Prayer posture is not about how spiritual the words sound. It is about whether the heart is actually moving toward God.</p>
+<h4>Core Idea 2 — Your Approach to God Is Trained by Repetition</h4>
+<p>Just as physical posture adjusts to how you sit, stand, and move every day, spiritual posture adjusts to how you regularly approach God. If prayer usually happens when we are tired, stressed, or rushing, then our spirit learns that God is something we fit into the margins of life rather than the center of it.</p>
+<div class="scr">"Trust in him at all times… pour out your heart before him." — Psalm 62:8 (KJV)</div>
+<p>"Pour out" describes open, honest, relational approach. But many believers pray guarded, surface-level prayers because that is what has been practiced. What we repeatedly practice becomes our default posture. This is how prayer posture forms: not in crisis moments, but in everyday patterns.</p>
+<h4>Core Idea 3 — Approach Trains Dependence and Spiritual Capacity</h4>
+<p>How we approach God consistently trains how much we depend on Him and how much spiritual strength our prayer develops.</p>
+<div class="scr">"Without me ye can do nothing." — John 15:5 (KJV)</div>
+<p>Many believers agree with this verse in theory, but in practice their rhythm is: try first, worry second, pray third. This is trained independence, not rebellion. Over time, shallow prayer posture produces limited discernment, emotional reactions, and spiritual fatigue. Intentional approach trains sensitivity, obedience, and authority.</p>
+<div class="scr">"Rising up a great while before day, he went out… and there prayed." — Mark 1:35 (KJV)</div>
+<p>Jesus treated prayer as deliberate approach, not emergency response. His authority flowed from alignment, not activity. How you approach God trains how much of God you can carry.</p>
+<h4>Practice for Lesson 1.1</h4>
+<p>This week, focus on how you begin prayer rather than how long you pray. Before speaking, pause, acknowledge God's presence, and consciously draw near in your mind and heart. Then pray. This retrains approach, which is the foundation of posture.</p>
+<h3>LESSON 1.2 — ROUTINE PRAYER VS. FORMING PRAYER</h3>
+<h4>Core Idea 1 — Not All Prayer Trains You the Same Way</h4>
+<p>Most believers pray, but not all prayer forms the believer in the same way. Some prayer keeps us connected. Other prayer changes how we think, respond, and endure.</p>
+<div class="scr">"Continue in prayer, and watch in the same with thanksgiving." — Colossians 4:2 (KJV)</div>
+<p>"Continue" describes steady spiritual posture, not just scheduled moments. Routine prayer maintains relationship. Forming prayer reshapes how we walk with God. Routine prayer keeps the door open. Forming prayer reshapes how we walk through the door.</p>
+<h4>Core Idea 2 — Routine Trains Comfort, Formation Trains Strength</h4>
+<p>What we repeat regularly becomes what we are prepared for. If prayer is usually quick and surface-level, we are training ourselves to rely on God only lightly.</p>
+<div class="scr">"And being in an agony he prayed more earnestly…" — Luke 22:44 (KJV)</div>
+<p>Pressure does not create posture; pressure reveals posture. Jesus intensified what He already practiced.</p>
+<div class="scr">"For bodily exercise profiteth little: but godliness is profitable unto all things…" — 1 Timothy 4:8 (KJV)</div>
+<h4>Core Idea 3 — Forming Prayer Builds Long-Term Capacity</h4>
+<p>Spiritual capacity is the ability to endure delay, carry responsibility, and remain faithful under pressure.</p>
+<div class="scr">"They that wait upon the Lord shall renew their strength…" — Isaiah 40:31 (KJV)</div>
+<div class="scr">"He that is faithful in that which is least is faithful also in much." — Luke 16:10 (KJV)</div>
+<h3>LESSON 1.3 — WHAT YOUR PRAYER LIFE IS TRAINING YOU FOR</h3>
+<h4>Core Idea 1 — Posture Always Prepares You for Something</h4>
+<div class="scr">"He that is faithful in that which is least is faithful also in much…" — Luke 16:10 (KJV)</div>
+<p>Faithfulness in prayer posture trains capacity, not just behavior. Prayer posture is always preparing you — the only question is what it is preparing you for.</p>
+<h4>Core Idea 2 — Pressure Reveals What Posture Has Built</h4>
+<div class="scr">"The rain descended… and it fell not… and it fell: and great was the fall of it." — Matthew 7:24–27 (KJV)</div>
+<p>The storm revealed the foundation. Pressure exposes posture.</p>
+<h4>Core Idea 3 — God Prepares People for Purpose Through Posture</h4>
+<div class="scr">"Humble yourselves… that he may exalt you in due time." — 1 Peter 5:6 (KJV)</div>
+<div class="scr">"He went out… and there prayed." — Mark 1:35 (KJV)</div>
+<p>Jesus developed posture before purpose. Purpose flows out of posture.</p>
+<div class="scr">MODULE 1 CLOSING PRAYER — Father, we thank You for inviting us not just to speak to You, but to draw near to You. Teach us to approach You with faith, expectation, and humility. Correct our posture where we have become casual, distracted, or rushed in Your presence. Train our hearts to depend on You first, to wait on You, and to listen for Your direction. Prepare us now for the future You are leading us into, and shape us through prayer so that we can carry what You desire to place in our hands. In Jesus' name, Amen.</div>
+<h2>MODULE 2 — HOW POSTURE IS BUILT DAILY</h2>
+<h3>Module Goal</h3>
+<p>To help believers understand that prayer posture is shaped by daily habits, comfort choices, and consistency, and that these patterns train spiritual reflexes that affect both personal life and leadership.</p>
+<h3>LESSON 2.1 — COMFORT POSTURE VS. CONTENDING POSTURE</h3>
+<h4>Core Idea 1 — What We Avoid in Prayer, We Weaken in Life</h4>
+<p>Most people do not stop praying. They simply avoid certain kinds of prayer — prayer that requires emotional honesty, confronts fear, challenges habits, or demands persistence. Comfort is not sinful, but comfort is not strengthening.</p>
+<div class="scr">"What, could ye not watch with me one hour? … The spirit indeed is willing, but the flesh is weak." — Matthew 26:40–41 (KJV)</div>
+<p>Jesus exposed that the disciples' spiritual endurance had not been trained. They loved Him, but they had not practiced staying spiritually alert when it was uncomfortable. Avoidance in prayer produces weakness in pressure.</p>
+<h4>Core Idea 2 — Contending Prayer Builds Endurance and Authority</h4>
+<p>Contending prayer means staying engaged with God when answers are delayed, emotions are heavy, and obedience is costly.</p>
+<div class="scr">"Praying always with all prayer and supplication in the Spirit, and watching thereunto with all perseverance…" — Ephesians 6:18 (KJV)</div>
+<div class="scr">"Men ought always to pray, and not to faint." — Luke 18:1 (KJV)</div>
+<h4>Core Idea 3 — Daily Choices Create Leadership Stability</h4>
+<div class="scr">"If thou faint in the day of adversity, thy strength is small." — Proverbs 24:10 (KJV)</div>
+<p>Strength must be built before adversity arrives. Prayer posture stabilizes leadership in every environment.</p>
+<h3>LESSON 2.2 — DRIFTING WITHOUT NOTICING</h3>
+<h4>Core Idea 1 — Spiritual Drift Is Subtle, Not Sudden</h4>
+<div class="scr">"Lest at any time we should let them slip." — Hebrews 2:1 (KJV)</div>
+<p>Drift is usually neglect, not rebellion. Prayer posture weakens when attention moves away.</p>
+<h4>Core Idea 2 — Busyness Often Replaces Attentiveness</h4>
+<div class="scr">"Martha was cumbered about much serving… but one thing is needful." — Luke 10:40–42 (KJV)</div>
+<p>Activity can replace attentiveness, especially in leadership.</p>
+<h4>Core Idea 3 — Drift Changes Leadership Before Belief</h4>
+<div class="scr">"Lean not unto thine own understanding." — Proverbs 3:5–6 (KJV)</div>
+<h3>LESSON 2.3 — TRAINING SPIRITUAL REFLEXES</h3>
+<h4>Core Idea 1 — We Respond by Reflex, Not Intention</h4>
+<div class="scr">"I made haste, and delayed not to keep thy commandments." — Psalm 119:60 (KJV)</div>
+<p>What we practice in calm moments becomes what we do in crisis.</p>
+<h4>Core Idea 2 — Prayer Builds Pause Before Reaction</h4>
+<div class="scr">"He that ruleth his spirit is better than he that taketh a city." — Proverbs 16:32 (KJV)</div>
+<h4>Core Idea 3 — Private Posture Shapes Public Leadership</h4>
+<div class="scr">"Watch ye and pray, lest ye enter into temptation." — Mark 14:38 (KJV)</div>
+<div class="scr">MODULE 2 CLOSING PRAYER — Father, we thank You for daily access to Your presence. Forgive us for choosing comfort over growth and busyness over attentiveness. Train our hearts to contend in prayer, to remain alert, and to pause before reacting. Shape our daily habits so that our reflex is to seek You first. Strengthen us to lead with stability, humility, and dependence on You. In Jesus' name, Amen.</div>
+<h2>MODULE 3 — POSTURE UNDER RESPONSIBILITY</h2>
+<h3>Module Goal</h3>
+<p>To help believers understand that as responsibility increases, prayer posture becomes essential for stability, wise decision-making, and endurance in conflict.</p>
+<h3>LESSON 3.1 — WHY SOME PRAYERS CARRY WEIGHT</h3>
+<h4>Core Idea 1 — Spiritual Weight Comes from Consistent Alignment</h4>
+<div class="scr">"If ye abide in me, and my words abide in you, ye shall ask what ye will, and it shall be done unto you." — John 15:7 (KJV)</div>
+<p>Abiding means remaining connected and living in ongoing relationship. Prayer carries weight when it flows from a life that stays aligned with God, not just moments of urgency. Spiritual authority is developed in consistency, not activated only in emergencies.</p>
+<h4>Core Idea 2 — Responsibility Exposes the Need for Weighted Prayer</h4>
+<div class="scr">"The effectual fervent prayer of a righteous man availeth much." — James 5:16 (KJV)</div>
+<p>This speaks to prayer that is effective because it flows from right standing and obedience. When prayer posture is shallow, people often respond to pressure with anxiety, control, and overthinking instead of spiritual confidence.</p>
+<h4>Core Idea 3 — Daily Life Trains the Strength of Our Prayers</h4>
+<div class="scr">"If I regard iniquity in my heart, the Lord will not hear me." — Psalm 66:18 (KJV)</div>
+<p>Daily obedience, integrity, and dependence train prayer posture and strengthen spiritual confidence.</p>
+<h3>LESSON 3.2 — PRAYER POSTURE AND DECISION-MAKING UNDER PRESSURE</h3>
+<h4>Core Idea 1 — Pressure Pushes People to Decide Fast, Not Wise</h4>
+<div class="scr">"He that hasteth with his feet sinneth." — Proverbs 19:2 (KJV)</div>
+<h4>Core Idea 2 — Fear-Based Decisions Replace Faith-Based Direction</h4>
+<div class="scr">"Fear thou not; for I am with thee…" — Isaiah 41:10 (KJV)</div>
+<h4>Core Idea 3 — Prayer Trains Us to Seek Direction, Not Just Relief</h4>
+<div class="scr">"Shew me thy ways, O Lord… lead me in thy truth." — Psalm 25:4–5 (KJV)</div>
+<h3>LESSON 3.3 — POSTURE IN CONFLICT AND SPIRITUAL BATTLES</h3>
+<h4>Core Idea 1 — Conflict Is Part of the Journey</h4>
+<div class="scr">"In the world ye shall have tribulation…" — John 16:33 (KJV)</div>
+<h4>Core Idea 2 — Without Prayer Posture We Fight People Instead of Problems</h4>
+<div class="scr">"We wrestle not against flesh and blood…" — Ephesians 6:12 (KJV)</div>
+<h4>Core Idea 3 — Prayer Builds Strength to Stand, Not Just Escape</h4>
+<div class="scr">"That ye may be able to withstand in the evil day…" — Ephesians 6:13 (KJV)</div>
+<div class="scr">"When thou passest through the waters, I will be with thee…" — Isaiah 43:2 (KJV)</div>
+<h4>Core Idea 4 — Prayer Protects the Heart from Hardening</h4>
+<div class="scr">"Keep thy heart with all diligence…" — Proverbs 4:23 (KJV)</div>
+<div class="scr">MODULE 3 CLOSING PRAYER — Father, we thank You that You do not leave us alone under pressure. Teach us to remain aligned with You when responsibility is heavy and conflict is present. Strengthen our hearts to stand, to respond with wisdom, and to endure with faith. Protect us from bitterness, fear, and emotional exhaustion. Train our prayer posture so that we carry responsibility with humility, peace, and trust in You. In Jesus' name, Amen.</div>
+<h2>MODULE 4 — POSTURE AND PURPOSE</h2>
+<h3>Module Goal</h3>
+<p>To help believers understand that prayer posture is not only for moments of need, but is essential for preparation, sustainability, and long-term alignment with God's purpose.</p>
+<h3>LESSON 4.1 — POSTURE BEFORE PROMOTION</h3>
+<h4>Core Idea 1 — God Values Formation More Than Visibility</h4>
+<p>Modern culture teaches people to pursue visibility, influence, and opportunity, but Scripture shows that God consistently prioritizes formation in hidden places before public responsibility.</p>
+<div class="scr">"He chose David also his servant… to feed Jacob his people… So he fed them according to the integrity of his heart; and guided them by the skilfulness of his hands." — Psalm 78:70–72 (KJV)</div>
+<p>Integrity came before influence. Skill came before authority. Prayer posture in hidden seasons trains faithfulness without recognition and obedience without applause.</p>
+<h4>Core Idea 2 — Waiting Seasons Develop Emotional and Spiritual Maturity</h4>
+<div class="scr">"For the Lord will not cast off for ever… though he cause grief, yet will he have compassion…" — Lamentations 3:31–33 (KJV)</div>
+<div class="scr">"The trying of your faith worketh patience. But let patience have her perfect work…" — James 1:3–4 (KJV)</div>
+<h4>Core Idea 3 — Promotion Without Posture Creates Invisible Pressure</h4>
+<div class="scr">"An inheritance may be gotten hastily at the beginning; but the end thereof shall not be blessed." — Proverbs 20:21 (KJV)</div>
+<div class="scr">"My grace is sufficient for thee: for my strength is made perfect in weakness." — 2 Corinthians 12:9 (KJV)</div>
+<h3>LESSON 4.2 — PRAYER POSTURE AND BURNOUT PREVENTION</h3>
+<h4>Core Idea 1 — Burnout Is Often Spiritual Depletion</h4>
+<p>Elijah became overwhelmed after great success, showing that even faithful leaders can become depleted. God restored him with rest, nourishment, and encouragement before correction. (1 Kings 19:3–8)</p>
+<h4>Core Idea 2 — Serving Without Renewal Leads to Resentment</h4>
+<div class="scr">"Come ye yourselves apart… and rest a while." — Mark 6:31 (KJV)</div>
+<h4>Core Idea 3 — Prayer Reminds Us We Are Not the Source</h4>
+<div class="scr">"Except the Lord build the house, they labour in vain…" — Psalm 127:1 (KJV)</div>
+<h4>Core Idea 4 — Sustainability Requires Rhythm, Not Just Passion</h4>
+<div class="scr">"The thing that thou doest is not good… thou wilt surely wear away." — Exodus 18:17–18 (KJV)</div>
+<h3>LESSON 4.3 — LIVING IN A POSTURE OF ALIGNMENT</h3>
+<h4>Core Idea 1 — Prayer Shapes Daily Choices</h4>
+<div class="scr">"Pray without ceasing." — 1 Thessalonians 5:17 (KJV)</div>
+<h4>Core Idea 2 — Alignment Requires Daily Surrender</h4>
+<div class="scr">"Take up his cross daily, and follow me." — Luke 9:23 (KJV)</div>
+<h4>Core Idea 3 — Alignment Produces Peace</h4>
+<div class="scr">"Thou wilt keep him in perfect peace, whose mind is stayed on thee…" — Isaiah 26:3 (KJV)</div>
+<h4>Core Idea 4 — Aligned Lives Influence Others</h4>
+<div class="scr">"Let your light so shine before men…" — Matthew 5:16 (KJV)</div>
+<div class="scr">MODULE 4 COMMISSIONING PRAYER — Father, we place our purpose, our future, and our daily steps into Your hands. Prepare us before You promote us, strengthen us so we do not burn out, and align our hearts so we walk in obedience and peace. Let our lives reflect Your wisdom and our leadership reflect Your humility. Teach us to live in constant dependence on You. In Jesus' name, Amen.</div>`},
+
+{id:2,series:"Kingdom Blueprint Series · Book 2",title:"The Authority of Prayer",sub:"Kingdom Legislation for Earthly Dominion",desc:"Prayer is Heaven's governmental system — the divine method by which kings and priests legislate God's will on earth. Book 2 of the Kingdom Blueprint Series.",tags:["Prayer","Kingdom","Apostolic","Governance","Warfare"],html:`
+<h2>THE AUTHORITY OF PRAYER: Kingdom Legislation for Earthly Dominion</h2>
+<p><em>Training Kings and Priests to Govern Through Prayer</em><br>Book 2 of The Kingdom Blueprint Series<br>Tone: Apostolic · Prophetic · Doctrinal</p>
+<h3>PREFACE / INTRODUCTION</h3>
+<p>Before there was worship, there was authority. Before there was the Church, there was dominion. In the beginning, God created man not as a servant, but as a governor—a priest and king whose words shaped the environment and whose obedience maintained Heaven's alignment on earth.</p>
+<p>When Adam fell, he did not lose a song; he lost a seat. He surrendered a throne. Prayer, therefore, is not man's invention to communicate with God—it is Heaven's restoration plan to return man to his rightful seat of dominion. Through prayer, authority is reborn.</p>
+<p>Many believers treat prayer as begging for divine sympathy rather than executing divine legislation. But true prayer is not a cry of weakness—it is the exercise of authority. It is the courtroom of Heaven, where decrees are released, verdicts are executed, and destinies are legislated. Prayer is not passive—it is governmental.</p>
+<p>In this era of awakening, God is calling forth a generation that will no longer approach His throne as slaves seeking relief, but as sons executing rulership. Kings legislate. Priests intercede. Together they establish Heaven's order on earth.</p>
+<p>This book, The Authority of Prayer, is a divine blueprint for that generation. It will take you from the outer courts of intercession to the inner courts of decree; from the posture of asking to the position of commanding. Each chapter builds upon Heaven's pattern for effective prayer—revealing the throne room, the courtroom, and the battleground of spiritual governance.</p>
+<p>The objective is not to teach you how to pray longer, but how to pray with authority—to move from reactionary prayer to legislative prayer, where you become a living decree that Heaven backs and Hell cannot ignore.</p>
+<p>Prepare your spirit to unlearn religion and embrace Kingdom law. You were not created to survive—you were created to rule. Prayer is the seat of that rule.</p>
+<div class="scr">"Heaven moves at the speed of your submission."</div>
+<h3>STRUCTURE OVERVIEW</h3>
+<table><thead><tr><th>Part</th><th>Title</th><th>Core Focus</th></tr></thead><tbody>
+<tr><td>I</td><td>The Foundation of Authority</td><td>Establishing the believer's legal and spiritual right to command through prayer.</td></tr>
+<tr><td>II</td><td>The Government of Heaven</td><td>Revealing divine order, courtroom protocol, and spiritual rank in prayer.</td></tr>
+<tr><td>III</td><td>Dimensions of Prayer</td><td>Exploring the progressive realms — communion, intercession, decree, and travail.</td></tr>
+<tr><td>IV</td><td>Prayer as Warfare</td><td>Unveiling the militant and judicial side of prayer — angels, altars, and decrees.</td></tr>
+<tr><td>V</td><td>Building a Life of Authority</td><td>Creating a disciplined, consecrated prayer life that sustains Kingdom power.</td></tr>
+</tbody></table>
+<h2>CHAPTER-BY-CHAPTER BLUEPRINT</h2>
+<h3>Part I – The Foundation of Authority</h3>
+<h4>Chapter 1 — Born to Reign: The Original Mandate of Dominion</h4>
+<ul><li>Eden's blueprint: authority through relationship.</li><li>How prayer restores what Adam lost.</li><li>"Heaven moves at the speed of your submission."</li></ul>
+<h4>Chapter 2 — The Legal Nature of Prayer</h4>
+<ul><li>Heaven's courtroom system (Isaiah 43:26).</li><li>Understanding decrees, petitions, and verdicts.</li><li>Aligning your words with Heaven's constitution — the Word of God.</li></ul>
+<h3>Part II – The Government of Heaven</h3>
+<h4>Chapter 3 — Throne Room Protocol: Entering His Courts with Authority</h4>
+<ul><li>The priestly order of Melchizedek.</li><li>Garments of righteousness and repentance.</li><li>The difference between access and authority.</li></ul>
+<h4>Chapter 4 — Spiritual Jurisdiction and Rank</h4>
+<ul><li>Praying within your metron.</li><li>Why submission precedes power (Luke 7:8).</li><li>Agreement as the highest form of authority.</li></ul>
+<h3>Part III – Dimensions of Prayer</h3>
+<h4>Chapter 5 — The Communion Dimension: Fellowship and Alignment</h4>
+<ul><li>The intimacy of priestly access.</li><li>Knowing the King's will through proximity.</li><li>"He that dwells in the secret place…"</li></ul>
+<h4>Chapter 6 — The Intercessory Dimension: Standing in the Gap</h4>
+<ul><li>The ministry of the watchman.</li><li>Bloodline intercession and generational cleansing.</li><li>Travail as the birthing of new seasons.</li></ul>
+<h4>Chapter 7 — The Command Dimension: Decreeing Heaven's Verdict</h4>
+<ul><li>Speaking as an ambassador, not a beggar.</li><li>The mechanics of decrees and prophetic enforcement.</li><li>When Heaven confirms what you declare.</li></ul>
+<h3>Part IV – Prayer as Warfare</h3>
+<h4>Chapter 8 — Binding and Loosing: Heaven's Legal Language of Dominion</h4>
+<ul><li>Defining "bind" and "loose" in Greek legal context.</li><li>Restricting demonic rights, releasing divine will.</li><li>The sword of agreement — word and Spirit united.</li></ul>
+<h4>Chapter 9 — Angelic Enforcement and the Courts of Heaven</h4>
+<ul><li>Angels as heavenly officers executing God's decrees.</li><li>Understanding angelic jurisdictions and ranks.</li><li>How to activate angelic assistance legally.</li></ul>
+<h4>Chapter 10 — Breaking Satanic Altars and Covenants</h4>
+<ul><li>The power of repentance and renunciation.</li><li>How demonic legalities are canceled through blood.</li><li>Cleansing land, lineage, and location through decree.</li></ul>
+<h3>Part V – Building a Life of Authority</h3>
+<h4>Chapter 11 — Consecration: The Fire that Sustains Power</h4>
+<ul><li>Prayer without purity equals power without presence.</li><li>Daily priesthood: oil, fire, and altar maintenance.</li></ul>
+<h4>Chapter 12 — Watchmen of the Kingdom: Governing by Hours and Seasons</h4>
+<ul><li>Morning, midday, and midnight watches.</li><li>Prayer as spiritual surveillance.</li></ul>
+<h4>Chapter 13 — Commanding Kingdom Outcomes: The King's Decree</h4>
+<ul><li>Moving from revelation to legislation.</li><li>Declaring Heaven's agenda until it manifests on earth.</li></ul>
+<h3>Appendices</h3>
+<ul><li>40-Day Prayer and Fasting Guide</li><li>Declarations of Authority and Power</li><li>Blueprint Activation Prayers for Leaders</li><li>Teaching Outline for Apostolic Schools</li></ul>`},
+
+{id:3,series:"Praise & Worship Study",title:"The Art of Praise",sub:"Daniel, David & Job — 4 Lessons, 15 Principles",desc:"Three men who each mastered a different dimension of praise. Daniel: persistent praise in warfare. David: expressive praise in presence. Job: sacrificial worship in suffering.",tags:["Praise","Worship","Daniel","David","Job","Warfare"],html:`
+<h2>THE ART OF PRAISE & WORSHIP</h2>
+<h3>Introduction</h3>
+<p>Praise is more than a song we sing in church — it is the believer's lifeline. To praise is to openly acknowledge who God is and what He has done.</p>
+<div class="scr">"Enter into his gates with thanksgiving, and into his courts with praise." — Psalm 100:4 (KJV)</div>
+<p>Praise is the doorway into God's presence, and worship is the surrender once we arrive before His throne. Together, they form the rhythm of a life aligned with heaven. We call it an "art" because, like any art, praise is practiced, expressed in many forms, and developed into skill. The Bible shows praise as lifting hands, kneeling, singing, dancing, shouting, and even weeping. It is creative, powerful, and intentional. But beyond expression, praise is also warfare, deliverance, strength, and transformation.</p>
+<p>In this study, we will see how three men — Daniel, David, and Job — each mastered a different dimension of praise.</p>
+<h2>LESSON 1 – Daniel: Persistent Praise in Warfare</h2>
+<p>Daniel's story is usually taught through prophecy, visions, and the lion's den. But hidden in his life is a consistent thread of praise in hostile territory. Daniel praised through exile, through decrees against him, through spiritual opposition, and through delay.</p>
+<h3>Principle 1: Praise is Posture</h3>
+<div class="scr">"Now when Daniel knew that the writing was signed, he went into his house; and his windows being open in his chamber toward Jerusalem, he kneeled upon his knees three times a day, and prayed, and gave thanks before his God, as he did beforetime." — Daniel 6:10 (KJV)</div>
+<ul>
+<li><strong>Habit, not reaction:</strong> Daniel's kneeling was not crisis-driven. He prayed this way as he did beforetime. His praise was posture and routine.</li>
+<li><strong>Facing Jerusalem:</strong> His body turned toward God's covenant promise (1 Kings 8:48). Though in Babylon, his orientation was toward the presence of God.</li>
+<li><strong>Countercultural kneeling:</strong> In Babylon, kneeling meant loyalty to kings or idols. Daniel's daily kneeling was rebellion against false gods. His body declared his allegiance.</li>
+<li>Ch. 1: Refused defiled food (praise through consecration). Ch. 2: Blessed God for revealing the king's dream. Ch. 9: Bowed in national intercession. Ch. 10: Collapsed before the angel, postured in weakness and humility.</li>
+</ul>
+<p><strong>Spiritual Warfare Insight:</strong> Posture itself is warfare. Kneeling before God is resistance against principalities. Every bow of Daniel's body said: "I serve Yahweh, not Babylon."</p>
+<p><strong>Application:</strong> Make posture part of your praise. Kneel, bow, or lift hands daily as declaration of your allegiance to God.</p>
+<h3>Principle 2: Praise is Power in Words</h3>
+<div class="scr">"From the first day that you set your heart to understand, and to humble yourself before your God, your words were heard, and I have come because of your words." — Daniel 10:12</div>
+<ul>
+<li>Daniel's words were not whispers in the dark — heaven heard them immediately.</li>
+<li>The angel moved because of his words. Praise and prayer released activity in the unseen realm.</li>
+<li>Ch. 2:19–23 – Daniel blessed God for wisdom: "Blessed be the name of God forever and ever…"</li>
+<li>Ch. 9:4 – He confessed sin and magnified God: "O Lord, the great and dreadful God, keeping covenant and mercy…"</li>
+</ul>
+<div class="scr">"Death and life are in the power of the tongue." — Proverbs 18:21 (KJV)</div>
+<div class="scr">"And they overcame him by the blood of the Lamb, and by the word of their testimony." — Revelation 12:11 (KJV)</div>
+<p><strong>Spiritual Warfare Insight:</strong> Words of praise send angels into motion. Silence benefits the enemy, but declarations align heaven and earth.</p>
+<h3>Principle 3: Praise is Warfare</h3>
+<div class="scr">"…the prince of the kingdom of Persia withstood me one and twenty days: but, lo, Michael, one of the chief princes, came to help me…" — Daniel 10:13 (KJV)</div>
+<p>Daniel's consistent devotion stirred warfare in the heavens. His prayers and praise pulled angelic activity into his situation. The "prince of Persia" was a demonic principality assigned to resist God's purposes in that region. Daniel's persistence released Michael, heaven's warrior angel, to intervene.</p>
+<div class="scr">"And when they began to sing and to praise, the Lord set ambushments against the children of Ammon, Moab, and mount Seir… and they were smitten." — 2 Chronicles 20:22 (KJV)</div>
+<div class="scr">"Let the high praises of God be in their mouth, and a twoedged sword in their hand." — Psalm 149:6 (KJV)</div>
+<p><strong>Spiritual Warfare Insight:</strong> Praise is not passive — it is military action. It strengthens heaven's forces, confuses the enemy, and asserts God's authority in contested regions.</p>
+<h3>Principle 4: Praise Sustains in Delay</h3>
+<div class="scr">"In those days I Daniel was mourning three full weeks. I ate no pleasant bread, neither came flesh nor wine in my mouth…" — Daniel 10:2–3 (KJV)</div>
+<p>Daniel prayed and praised faithfully for 21 days with no visible answer. The angel revealed that Daniel's words were heard on day one — the delay was warfare, not silence. Abraham waited 25 years for Isaac yet built altars in praise. Hannah praised through years of barrenness before Samuel's birth. Acts 12 — the church prayed without ceasing until Peter was released from prison. Daniel's persistence proved that delay is not denial.</p>
+<p><strong>Spiritual Warfare Insight:</strong> Delay reveals spiritual resistance. Praise sustains faith in the in-between. Every day Daniel praised, he weakened the enemy's grip until breakthrough came.</p>
+<h3>Principle 5: Praise Transforms the Praiser</h3>
+<div class="scr">"Then there came again and touched me… and he strengthened me, and said, O man greatly beloved, fear not: peace be unto thee, be strong, yea, be strong." — Daniel 10:18–19 (KJV)</div>
+<p>Daniel collapsed when the angel appeared — his strength failed. Yet in God's presence he was touched and strengthened. Before God changed Babylon, He changed Daniel. Praise positioned him for transformation. Isaiah 6: Isaiah undone by glory, then purified for mission. Ezekiel 1: Fell face down, then empowered for prophetic ministry. Revelation 1: John collapsed, then strengthened by Christ's touch.</p>
+<p><strong>Spiritual Warfare Insight:</strong> The enemy aims to exhaust believers. God uses worship to renew strength. Transformed worshippers are more dangerous than changed circumstances.</p>
+<h3>Lesson 1 Summary</h3>
+<p>Daniel shows that persistent praise is: (1) Posture – visible allegiance in hostile culture. (2) Words – declarations that move heaven. (3) Warfare – participation in angelic battles. (4) Endurance – sustaining faith through delay. (5) Transformation – inner strengthening before outward change.</p>
+<h3>Discussion Questions — Lesson 1</h3>
+<ul><li>How does Daniel's posture (kneeling toward Jerusalem) challenge your own posture in worship?</li><li>Why do you think the angel came "because of your words"?</li><li>What does Daniel's 21-day persistence teach us about delays in prayer?</li><li>How does praise act as a weapon in spiritual warfare?</li><li>Have you experienced personal transformation through worship before circumstances shifted?</li></ul>
+<h2>LESSON 2 – David: Expressive Praise in Presence</h2>
+<p>David is called "a man after God's own heart" (1 Samuel 13:14; Acts 13:22). His life provides the most expressive and creative model of praise in the Bible. From shepherd boy to king, David lived a lifestyle of praise that invited God's presence into every situation.</p>
+<h3>Principle 6: Praise is Creative</h3>
+<div class="scr">"Sing to the Lord a new song; sing to the Lord, all the earth." — Psalm 96:1</div>
+<ul>
+<li>David wrote many psalms as fresh expressions of praise.</li>
+<li>Psalm 40:3 – "He put a new song in my mouth, a hymn of praise to our God."</li>
+<li>1 Chronicles 23:5 – Four thousand set apart to praise the Lord with instruments David provided.</li>
+<li>1 Chronicles 25:1 – David set apart sons for the ministry of prophesying with harps, lyres and cymbals.</li>
+</ul>
+<p><strong>Spiritual Warfare Insight:</strong> Creative praise brings fresh anointing and disrupts cycles of despair.</p>
+<h3>Principle 7: Praise is Honest</h3>
+<div class="scr">"How long, Lord? Will You forget me forever? How long will You hide Your face from me?… But I trust in Your unfailing love; my heart rejoices in Your salvation. I will sing the Lord's praise, for He has been good to me." — Psalm 13:1–2, 5–6</div>
+<div class="scr">"Have mercy on me, O God, according to Your unfailing love; according to Your great compassion blot out my transgressions. Wash away all my iniquity and cleanse me from my sin." — Psalm 51:1–2</div>
+<p>David turned raw confession into worship. Honest praise dismantles shame and silences the accuser.</p>
+<h3>Principle 8: Praise Invites God's Presence</h3>
+<div class="scr">"But thou art holy, O thou that inhabitest the praises of Israel." — Psalm 22:3 (KJV)</div>
+<div class="scr">"Whenever the spirit from God came on Saul, David would take up his lyre and play. Then relief would come to Saul; he would feel better, and the evil spirit would leave him." — 1 Samuel 16:23</div>
+<p><strong>Spiritual Warfare Insight:</strong> Where God's presence dwells, torment must flee.</p>
+<h3>Principle 9: Praise is Overflow</h3>
+<div class="scr">"Wearing a linen ephod, David was dancing before the Lord with all his might, while he and all Israel were bringing up the ark of the Lord with shouts and the sound of trumpets." — 2 Samuel 6:14–15</div>
+<div class="scr">"Praise the Lord, my soul; all my inmost being, praise His holy name." — Psalm 103:1–2</div>
+<p><strong>Spiritual Warfare Insight:</strong> Overflowing praise breaks chains of self-consciousness and fear of man.</p>
+<h3>Principle 10: Praise Prepares for Victory</h3>
+<div class="scr">"Praise be to the Lord my Rock, who trains my hands for war, my fingers for battle." — Psalm 144:1</div>
+<div class="scr">"The Lord who rescued me from the paw of the lion and the paw of the bear will rescue me from the hand of this Philistine." — 1 Samuel 17:37</div>
+<div class="scr">"As they began to sing and praise, the Lord set ambushes against the men of Ammon and Moab and Mount Seir who were invading Judah, and they were defeated." — 2 Chronicles 20:22</div>
+<p><strong>Spiritual Warfare Insight:</strong> Praise is not reaction after victory — it is preparation before victory.</p>
+<h3>Discussion Questions — Lesson 2</h3>
+<ul><li>How does David's creativity in psalms and instruments expand your understanding of praise?</li><li>What does his honesty in lament teach us about intimacy with God?</li><li>How have you seen praise shift the atmosphere in your life or home?</li><li>Why do you think David praised unashamed, even when criticized?</li><li>How can you use praise as preparation before battles in your own life?</li></ul>
+<h2>LESSON 3 – Job: Sacrificial Worship in Suffering</h2>
+<p>Job is one of the most mysterious and difficult figures in Scripture. A righteous man who lost wealth, children, and health, Job demonstrates a dimension of praise that few understand: sacrificial worship in suffering.</p>
+<h3>Principle 11: Praise Begins with Surrender</h3>
+<div class="scr">"At this, Job got up and tore his robe and shaved his head. Then he fell to the ground in worship and said: 'Naked I came from my mother's womb, and naked I will depart. The Lord gave and the Lord has taken away; may the name of the Lord be praised.'" — Job 1:20–21</div>
+<p>Job lost his children, servants, and possessions in one day, yet his first response was worship. Praise in surrender means acknowledging God's sovereignty, even without understanding His plan.</p>
+<div class="scr">"Not my will, but Yours be done." — Luke 22:42</div>
+<div class="scr">"Though the fig tree does not bud… yet I will rejoice in the Lord." — Habakkuk 3:17–18</div>
+<p><strong>Spiritual Warfare Insight:</strong> Surrender shuts the enemy's mouth. Satan claimed Job would curse God (Job 1:11). Job's worship proved Satan a liar.</p>
+<h3>Principle 12: Praise is Costly</h3>
+<div class="scr">"His wife said to him, 'Are you still maintaining your integrity? Curse God and die!' He replied, 'You are talking like a foolish woman. Shall we accept good from God, and not trouble?' In all this, Job did not sin in what he said." — Job 2:9–10</div>
+<div class="scr">"Through Jesus… let us continually offer to God a sacrifice of praise—the fruit of lips that openly profess His name." — Hebrews 13:15</div>
+<p><strong>Spiritual Warfare Insight:</strong> The enemy tests if praise is conditional. Costly praise destroys conditional worship and anchors the believer in loyalty.</p>
+<h3>Principle 13: Praise Speaks Truth in Suffering</h3>
+<div class="scr">"I know that my redeemer lives, and that in the end He will stand on the earth. And after my skin has been destroyed, yet in my flesh I will see God; I myself will see Him with my own eyes—I, and not another." — Job 19:25–27</div>
+<p>Job's declarations of God's truth came in the middle of pain, not after deliverance. Praise in suffering isn't denial — it's declaring God's truth louder than pain.</p>
+<div class="scr">"Why, my soul, are you downcast?… Put your hope in God, for I will yet praise Him." — Psalm 42:11</div>
+<h3>Principle 14: Praise is a Path to Revelation</h3>
+<div class="scr">"Then the Lord spoke to Job out of the storm. He said: 'Who is this that obscures my plans with words without knowledge? Brace yourself like a man; I will question you, and you shall answer me.'" — Job 38:1–3</div>
+<p>Job's long wrestling with God through lament and praise opened the door for a direct encounter. Through suffering and worship, Job received revelation of God's greatness, creation, and sovereignty. Revelation did not erase his pain but gave new perspective.</p>
+<p><strong>Spiritual Warfare Insight:</strong> Worship in suffering lifts the believer into God's perspective, where the enemy's intimidation loses power.</p>
+<h3>Principle 15: Praise Restores the Worshipper</h3>
+<div class="scr">"After Job had prayed for his friends, the Lord restored his fortunes and gave him twice as much as he had before… The Lord blessed the latter part of Job's life more than the former part." — Job 42:10–12</div>
+<p>Notice the sequence: praise and intercession came before restoration. Job prayed for those who accused him — costly obedience that unlocked blessing. His restoration was also a deeper understanding of God (Job 42:5 – "My ears had heard of You but now my eyes have seen You.").</p>
+<div class="scr">"Those who sow with tears will reap with songs of joy." — Psalm 126:5</div>
+<h3>Discussion Questions — Lesson 3</h3>
+<ul><li>What strikes you most about Job's immediate worship after loss?</li><li>Why does costly praise silence the enemy's accusations?</li><li>How can declaring truth in suffering strengthen faith?</li><li>What revelations of God often come through hardship?</li><li>How does Job's restoration encourage you in your own trials?</li></ul>
+<h2>LESSON 4 – The Art of Praise in Practice: Hearing God and Waging Warfare</h2>
+<h3>Introduction: Praise as Warfare</h3>
+<p>Most believers pray daily, but many never hear God clearly or see breakthrough. While prayer alone speaks to God, praise and worship open the spiritual battlefield.</p>
+<div class="scr">"Then said he unto me, Fear not, Daniel: for from the first day that thou didst set thine heart to understand, and to chasten thyself before thy God, thy words were heard, and I am come for thy words." — Daniel 10:12 (KJV)</div>
+<div class="scr">"For we wrestle not against flesh and blood, but against principalities, against powers, against the rulers of the darkness of this world, against spiritual wickedness in high places." — Ephesians 6:12 (KJV)</div>
+<h3>Step 1 – Thanksgiving: Breaking Through the Gate</h3>
+<div class="scr">"Enter into his gates with thanksgiving, and into his courts with praise: be thankful unto him, and bless his name." — Psalm 100:4 (KJV)</div>
+<p>Thanksgiving is the entry pass into God's presence. Many skip this step, rushing straight into requests or complaints. But if thanksgiving is ignored, the gates remain closed. Thanksgiving is the spiritual key that unlocks heaven. Demons of complaint, bitterness, and ingratitude keep believers at the gate, powerless. Angels are witnesses of God's works — when you give thanks, you acknowledge His faithfulness, and angels move in agreement.</p>
+<p><strong>Armor Connection – Belt of Truth (Ephesians 6:14):</strong> Thanksgiving fastens you to truth. It silences lies like "God has forgotten you" or "God has failed you."</p>
+<div class="scr">Declaration Prayer: "Father, I enter Your gates today with thanksgiving. I silence every spirit of complaint, bitterness, and ingratitude. I align with truth: You have saved me, protected me, provided for me, and loved me. I decree the gates of heaven are open, and I step into Your presence in Jesus' name. Amen."</div>
+<h3>Step 2 – Praise: Releasing Angelic Forces</h3>
+<div class="scr">"But thou art holy, O thou that inhabitest the praises of Israel." — Psalm 22:3 (KJV)</div>
+<div class="scr">"Bless the Lord, ye his angels, that excel in strength, that do his commandments, hearkening unto the voice of his word." — Psalm 103:20 (KJV)</div>
+<div class="scr">"And when they began to sing and to praise, the Lord set ambushments against the children of Ammon, Moab, and mount Seir… and they were smitten." — 2 Chronicles 20:22 (KJV)</div>
+<p>Demons of fear, heaviness, and intimidation attack your mouth. Their goal: silence you, because silence keeps angels bound. Angels draw swords when you declare God's Word in praise. Every "Hallelujah" is a command post in the spirit.</p>
+<p><strong>Armor Connection – Sword of the Spirit (Ephesians 6:17):</strong> The Word is the sword, but praise is how you swing it.</p>
+<div class="scr">Declaration Prayer: "Father, I exalt You above every problem. I declare You are holy, mighty, and faithful. I release the sword of the Spirit in praise. Let every demonic assignment of fear and heaviness break now. Angels, move on the Word of God I declare, in Jesus' name. Amen."</div>
+<h3>Step 3 – Worship: Establishing the Throne Room</h3>
+<div class="scr">"But the hour cometh, and now is, when the true worshippers shall worship the Father in spirit and in truth: for the Father seeketh such to worship him." — John 4:23–24 (KJV)</div>
+<p>Worship goes deeper than praise. Praise celebrates; worship surrenders. Worship is bowing, yielding, and adoring God for who He is. Demons of pride, distraction, and performance corrupt worship. In worship, angels minister strength. Worship opens the throne room — a realm of intimacy where angelic presence is thick.</p>
+<p><strong>Armor Connection – Breastplate of Righteousness (Ephesians 6:14):</strong> Worship guards the heart. In surrender, accusations lose power.</p>
+<div class="scr">Declaration Prayer: "Father, I bow before You in surrender. Strip away pride, distraction, and performance. I yield my life at Your throne. Strengthen me, O Lord. Let righteousness guard my heart as I worship You in spirit and truth. Amen."</div>
+<h3>Step 4 – Waiting: Enduring the Warfare</h3>
+<div class="scr">"I will stand upon my watch… and will watch to see what he will say unto me…" — Habakkuk 2:1 (KJV)</div>
+<p>Daniel prayed 21 days without visible results. His waiting sustained angelic warfare until Michael prevailed. Demons of delay, discouragement, and distraction attack here — their goal is to break your persistence before breakthrough. Angels fight in the heavens while you remain steadfast on earth. Your waiting applies pressure until the resistance breaks.</p>
+<div class="scr">Declaration Prayer: "Father, I will not faint in delay. I reject discouragement and distraction. I decree that my waiting is warfare, my silence is faith, and my perseverance fuels angelic victory. I will stand my watch until breakthrough comes. Amen."</div>
+<h3>Step 5 – Obedience: Sealing the Victory</h3>
+<div class="scr">"He that hath my commandments, and keepeth them, he it is that loveth me… and I will love him, and will manifest myself to him." — John 14:21 (KJV)</div>
+<p>Daniel obeyed even under threat of death. Job obeyed in loss (Job 1:21). David obeyed by praising in shame (2 Samuel 6:22). Obedience is the proof of love and the seal of revelation. When you obey, angels reinforce the Word you align with. Obedience multiplies revelation.</p>
+<div class="scr">Declaration Prayer: "Father, I choose obedience. I silence rebellion, compromise, and delay. I raise the shield of faith and act on Your Word. Manifest Yourself in my life as I align with Your voice, in Jesus' name. Amen."</div>
+<h3>Master Summary: 15 Principles of Praise & Worship</h3>
+<p><strong>Daniel – Persistent Praise in Warfare:</strong> (1) Praise is Posture — Daniel 6:10. (2) Praise is Power in Words — Daniel 10:12. (3) Praise is Warfare — Daniel 10:13. (4) Praise Sustains in Delay — Daniel 10:2–3. (5) Praise Transforms the Praiser — Daniel 10:18–19.</p>
+<p><strong>David – Expressive Praise in Presence:</strong> (6) Praise is Creative — Psalm 96:1. (7) Praise is Honest — Psalm 13:1–6; Psalm 51:1–2. (8) Praise Invites God's Presence — Psalm 22:3. (9) Praise is Overflow — 2 Samuel 6:14. (10) Praise Prepares for Victory — 1 Samuel 17:37.</p>
+<p><strong>Job – Sacrificial Worship in Suffering:</strong> (11) Praise Begins with Surrender — Job 1:20–21. (12) Praise is Costly — Job 2:9–10. (13) Praise Speaks Truth in Suffering — Job 19:25–27. (14) Praise is a Path to Revelation — Job 38:1–3. (15) Praise Restores the Worshipper — Job 42:10–12.</p>
+<div class="scr">Together, these 15 principles reveal that praise is posture, weapon, honesty, endurance, creativity, surrender, and ultimately transformation. Daniel shows us how to praise in conflict. David shows us how to praise in celebration. Job shows us how to praise in suffering.</div>`},
+
+{id:4,series:"Church of the Living God, Atlanta — Foundation",title:"The 13 Doctrinal Pillars",sub:"Church of the Living God, Atlanta",desc:"The complete foundational doctrinal framework — all 13 pillars with key scriptures, context, meaning, application, and teaching highlights.",tags:["Doctrine","Foundation","Oneness","Holiness","Salvation","Theology"],html:`
+<h2>THE 13 DOCTRINAL PILLARS OF THE CHURCH OF THE LIVING GOD, ATLANTA</h2>
+<h2>Pillar I – The Word of God (Foundation of Truth)</h2>
+<h3>Key Scriptures</h3>
+<div class="scr">"Man doth not live by bread only, but by every word that proceedeth out of the mouth of the Lord." — Deuteronomy 8:3 (KJV)</div>
+<div class="scr">"All scripture is given by inspiration of God, and is profitable for doctrine, for reproof, for correction, for instruction in righteousness." — 2 Timothy 3:16–17 (KJV)</div>
+<h3>Context & Meaning</h3>
+<p>Moses reminded Israel that physical food sustains the body, but God's Word sustains life itself. Centuries later Paul echoed the same truth to Timothy while preparing him for ministry in a corrupt culture: Scripture—every line of it—is breathed by God. For the command-keeping church, the Word is not optional guidance but the living law of life and holiness.</p>
+<h3>Application for Leaders / Saints</h3>
+<p>Leaders must guard the pulpit from opinions and uphold the Word as final authority. Saints must measure every belief, prophecy, or experience by Scripture. A people rooted in the Word cannot be deceived.</p>
+<h3>Teaching Highlights</h3>
+<p>The Word builds faith, exposes sin, and directs obedience. When the Church lives by the Word, it stands unshaken in every generation.</p>
+<h2>Pillar II – The Godhead (The Oneness of God in Christ Jesus)</h2>
+<div class="scr">"Hear, O Israel: The Lord our God is one Lord." — Deuteronomy 6:4 (KJV)</div>
+<div class="scr">"For in him dwelleth all the fulness of the Godhead bodily." — Colossians 2:9 (KJV)</div>
+<h3>Context & Meaning</h3>
+<p>From the beginning Israel was surrounded by polytheistic nations, yet God declared His singular nature—one Lord, not many. In the New Testament Paul confronted Greek philosophy that divided deity into layers and revealed that in Jesus dwells all of God's fullness. The oneness message protects the Church from confusion: the Father, Son, and Holy Ghost are not separate beings but one God revealed through different manifestations.</p>
+<h3>Application for Leaders / Saints</h3>
+<p>Teach the oneness of God clearly and lovingly, using Scripture instead of argument. Emphasize that understanding who God is deepens worship and anchors faith.</p>
+<h3>Teaching Highlights</h3>
+<p>True revelation of God produces unity and purity in doctrine. The Church proclaims one Lord, one faith, one baptism (Ephesians 4:5).</p>
+<h2>Pillar III – The Name of Jesus (Power and Salvation)</h2>
+<div class="scr">"For unto us a child is born… and his name shall be called Wonderful, Counsellor, The mighty God, The everlasting Father, The Prince of Peace." — Isaiah 9:6 (KJV)</div>
+<div class="scr">"Neither is there salvation in any other: for there is none other name under heaven given among men, whereby we must be saved." — Acts 4:12 (KJV)</div>
+<h3>Context & Meaning</h3>
+<p>Isaiah foretold that the coming Messiah would bear titles belonging only to God Himself. Peter later confirmed this prophecy after healing a lame man, boldly proclaiming that salvation is found in Jesus alone. For the command-keeping believer, the name of Jesus represents the total authority of God manifested in flesh and reigning forever.</p>
+<h3>Application for Leaders / Saints</h3>
+<p>Use His name reverently and faithfully—when praying, baptizing, and ministering. Teach that invoking His name is not ritual but relationship; it carries the power of His person and presence.</p>
+<h3>Teaching Highlights</h3>
+<p>The name of Jesus conquers sin, sickness, and demonic power. The Church's authority flows from that name, and no other.</p>
+<h2>Pillar IV – Salvation (Repentance, Baptism, and the Holy Ghost)</h2>
+<div class="scr">"Then will I sprinkle clean water upon you… A new heart also will I give you, and a new spirit will I put within you." — Ezekiel 36:25–27 (KJV)</div>
+<div class="scr">"Then Peter said unto them, Repent, and be baptized every one of you in the name of Jesus Christ for the remission of sins, and ye shall receive the gift of the Holy Ghost." — Acts 2:38 (KJV)</div>
+<h3>Context & Meaning</h3>
+<p>Through Ezekiel, God promised spiritual cleansing and renewal, foreshadowing the new covenant. On the Day of Pentecost, that promise was fulfilled when Peter preached the plan of salvation—repentance, water baptism in Jesus' name, and the infilling of the Holy Ghost. For commandment-keeping believers, this is not a denominational formula but divine order: repentance turns the heart, baptism washes away sin, and the Holy Ghost empowers the new life.</p>
+<h3>Application for Leaders / Saints</h3>
+<p>Preach salvation as transformation, not membership. Ensure new believers are properly instructed in repentance, baptized in Jesus' name, and guided into receiving the Holy Ghost.</p>
+<h3>Teaching Highlights</h3>
+<p>Salvation begins at the altar and continues in daily obedience. The Church must never dilute or modernize the message of Acts 2:38—it is the foundation of the apostolic faith.</p>
+<h2>Pillar V – The Holy Spirit (Infilling and Power)</h2>
+<div class="scr">"And it shall come to pass afterward, that I will pour out my spirit upon all flesh…" — Joel 2:28–29 (KJV)</div>
+<div class="scr">"But ye shall receive power, after that the Holy Ghost is come upon you: and ye shall be witnesses unto me…" — Acts 1:8 (KJV)</div>
+<h3>Context & Meaning</h3>
+<p>Joel's prophecy promised a universal outpouring of the Spirit. Centuries later, Jesus reaffirmed this before His ascension, declaring that the Spirit would empower His followers to witness and live victoriously. The evidence of the Holy Ghost is speaking in tongues, but the result of being Spirit-filled is a transformed character, bold witness, and holy living.</p>
+<h3>Application for Leaders / Saints</h3>
+<p>Encourage believers to seek continual renewal of the Holy Ghost through prayer and consecration. Leaders should operate in the gifts of the Spirit responsibly and teach discernment to prevent spiritual abuse or confusion.</p>
+<h3>Teaching Highlights</h3>
+<p>The Holy Spirit is not a feeling but a force of transformation. It equips the Church to conquer sin, endure trials, and expand the kingdom with power and authority.</p>
+<h2>Pillar VI – Holiness (The Standard of Living for the Saints)</h2>
+<div class="scr">"Sanctify yourselves therefore, and be ye holy: for I am the Lord your God." — Leviticus 20:7–8 (KJV)</div>
+<div class="scr">"But as he which hath called you is holy, so be ye holy in all manner of conversation." — 1 Peter 1:15–16 (KJV)</div>
+<h3>Context & Meaning</h3>
+<p>God commanded holiness long before the New Testament—it was the mark of His covenant people. Peter reaffirmed that call, reminding believers that holiness is not optional but essential. It's a lifestyle reflecting God's purity in our thoughts, speech, appearance, and behavior. Holiness separates God's people from worldliness and aligns them with His character.</p>
+<h3>Application for Leaders / Saints</h3>
+<p>Holiness must begin inwardly before it can be seen outwardly. Teach modesty, purity, and self-control not as legalism but as love for God. Leaders should model holiness in dress, conduct, and humility so the congregation sees the standard lived, not just preached.</p>
+<h3>Teaching Highlights</h3>
+<p>Holiness preserves power. Without separation, there can be no anointing. The Church must reflect the holiness of God to carry His glory with authority and credibility.</p>
+<h2>Pillar VII – The Sabbath and Obedience to God's Commandments</h2>
+<div class="scr">"Remember the sabbath day, to keep it holy…" — Exodus 20:8–11 (KJV)</div>
+<div class="scr">"If thou turn away thy foot from the sabbath… then shalt thou delight thyself in the Lord." — Isaiah 58:13–14 (KJV)</div>
+<h3>Context & Meaning</h3>
+<p>The Sabbath was established at creation and reaffirmed in the Ten Commandments as a sign of covenant between God and His people. Isaiah later revealed that keeping the Sabbath brings joy and spiritual renewal. In a world of constant labor and distraction, the Sabbath remains a sacred reminder that God is our Creator and Sustainer. For commandment-keeping believers, it is not bondage—it is blessing and rest for the soul.</p>
+<h3>Application for Leaders / Saints</h3>
+<p>Teach the Sabbath as both a command and a gift. Help believers set aside worldly pursuits and dedicate the day to worship, study, and fellowship. Leadership should model Sabbath reverence by avoiding unnecessary labor and honoring God with focused rest and reflection.</p>
+<h3>Teaching Highlights</h3>
+<p>Sabbath observance strengthens faith, renews families, and restores balance. Obedience reveals love for the Lawgiver; rest demonstrates trust in His provision.</p>
+<h2>Pillar VIII – Prayer, Fasting, and Consecration</h2>
+<div class="scr">"He kneeled upon his knees three times a day, and prayed, and gave thanks before his God." — Daniel 6:10 (KJV)</div>
+<div class="scr">"When thou prayest, enter into thy closet… When thou fastest, anoint thine head, and wash thy face." — Matthew 6:6, 17–18 (KJV)</div>
+<h3>Context & Meaning</h3>
+<p>Daniel's commitment to daily prayer in Babylon exemplifies unwavering devotion even under pressure. Jesus later redefined prayer and fasting not as public display but as intimate communion with the Father. Prayer aligns the heart with heaven, fasting disciplines the body, and consecration preserves spiritual focus. These three together form the backbone of spiritual strength and revival in the Church.</p>
+<h3>Application for Leaders / Saints</h3>
+<p>Leaders must prioritize personal devotion before public ministry. Establish times of corporate fasting and prayer to keep the Church unified and spiritually sharp. Encourage believers to live consecrated lives free from distractions that weaken spiritual discernment.</p>
+<h3>Teaching Highlights</h3>
+<p>Private devotion fuels public power. A praying Church cannot be powerless; a fasting believer cannot be defeated.</p>
+<h2>Pillar IX – The Church (The Body of Christ and Its Divine Order)</h2>
+<div class="scr">"And they continued stedfastly in the apostles' doctrine and fellowship…" — Acts 2:42–44 (KJV)</div>
+<div class="scr">"And he gave some, apostles… for the perfecting of the saints." — Ephesians 4:11–13 (KJV)</div>
+<h3>Context & Meaning</h3>
+<p>The early Church was founded upon the apostles' doctrine, united through fellowship, worship, and prayer. Paul later defined the structure of leadership that Christ Himself established. The Church is not a building or a denomination—it is the living body of Christ on earth. Each believer has a divine function, and order within the Church mirrors the order of heaven.</p>
+<h3>Application for Leaders / Saints</h3>
+<p>Pastors and elders must ensure that church governance aligns with Scripture. Teach believers their value and responsibility within the body. A Church thrives when members walk in unity, honor spiritual authority, and operate in their gifts with humility.</p>
+<h3>Teaching Highlights</h3>
+<p>The Church is the pillar and ground of truth. A Church rooted in doctrine and love will overcome division, deception, and worldliness.</p>
+<h2>Pillar X – The Ministry (Fivefold Leadership and Spiritual Gifts)</h2>
+<div class="scr">"And I will give you pastors according to mine heart…" — Jeremiah 3:15 (KJV)</div>
+<div class="scr">"And God hath set some in the church, first apostles…" — 1 Corinthians 12:28 (KJV)</div>
+<h3>Context & Meaning</h3>
+<p>Throughout history, God has chosen leaders to shepherd His people. Jeremiah prophesied of true pastors who would teach with understanding, not control. Paul later revealed that God placed ministry offices and gifts within the Church to perfect the saints. These are not positions of prestige but of service, ensuring the body remains healthy, equipped, and aligned with the Spirit.</p>
+<h3>Application for Leaders / Saints</h3>
+<p>Ministers must walk in humility and accountability. Spiritual gifts should operate in love and order, always edifying the Church. Saints must honor leadership and also recognize that every believer has a gift to serve the body.</p>
+<h3>Teaching Highlights</h3>
+<p>The anointing flows through divine order. Leadership is stewardship, not ownership—every gift is given to glorify Christ, not self.</p>
+<h2>Pillar XI – The Return of Christ and the Resurrection of the Saints</h2>
+<div class="scr">"I go to prepare a place for you… I will come again, and receive you unto myself." — John 14:2–3 (KJV)</div>
+<div class="scr">"The Lord himself shall descend from heaven with a shout…" — 1 Thessalonians 4:16–17 (KJV)</div>
+<h3>Context & Meaning</h3>
+<p>Before His crucifixion, Jesus promised His disciples that His departure was temporary—He would return to gather them unto Himself. Paul later expanded on this revelation, describing the rapture of the saints at the sound of the trumpet. The early Church lived with this expectation daily, keeping their faith pure and their hearts ready. For the commandment-keeping believer, the return of Christ is not a mystery but a motivation for holy living.</p>
+<h3>Application for Leaders / Saints</h3>
+<p>Preach the hope of His coming often. Teach believers to live ready—not in fear, but in faith. The knowledge of Christ's imminent return should drive evangelism, purity, and perseverance.</p>
+<h3>Teaching Highlights</h3>
+<p>Every generation must live as if He may come today. His promise is sure, His return certain, and His reward with Him.</p>
+<h2>Pillar XII – The Final Judgment and Eternal Destiny</h2>
+<div class="scr">"For God shall bring every work into judgment, with every secret thing, whether it be good, or whether it be evil." — Ecclesiastes 12:14 (KJV)</div>
+<div class="scr">"And I saw a great white throne… and the dead were judged out of those things which were written in the books." — Revelation 20:11–15 (KJV)</div>
+<h3>Context & Meaning</h3>
+<p>Solomon taught that every deed, hidden or seen, will be judged by God. John later saw the ultimate fulfillment of that truth at the Great White Throne Judgment. There, all humanity will stand before God—those whose names are in the Book of Life will enter eternal joy; those who rejected His truth will face eternal separation. This doctrine calls the Church to sobriety, repentance, and faithful preaching.</p>
+<h3>Application for Leaders / Saints</h3>
+<p>Leaders must teach both grace and accountability. Use the doctrine of judgment not to frighten but to awaken hearts. Saints should examine themselves daily, living with eternity in view.</p>
+<h3>Teaching Highlights</h3>
+<p>Judgment is certain, but mercy is available now. Eternity is the reason we preach, pray, and live holy.</p>
+<h2>Pillar XIII – The New Heaven, the New Earth, and Eternal Glory</h2>
+<div class="scr">"For, behold, I create new heavens and a new earth: and the former shall not be remembered." — Isaiah 65:17 (KJV)</div>
+<div class="scr">"And I saw a new heaven and a new earth… and God shall wipe away all tears from their eyes." — Revelation 21:1–4 (KJV)</div>
+<h3>Context & Meaning</h3>
+<p>Isaiah prophesied of the day when God would renew all creation. John saw that vision fulfilled—after judgment, a restored world where righteousness dwells and God's presence abides forever. In this eternal kingdom, pain, death, and sorrow will be no more. The redeemed will live in the light of His glory for eternity.</p>
+<h3>Application for Leaders / Saints</h3>
+<p>Encourage believers to endure trials with heaven in mind. Remind them that earthly suffering is temporary, but eternal glory is everlasting. Keep the hope of heaven alive in every message and mission.</p>
+<h3>Teaching Highlights</h3>
+<p>Heaven is not the end—it's the beginning of forever. The faithful will reign with Christ in perfect joy and peace.</p>`}
+];
+
+const allTags=[...new Set(T.flatMap(t=>t.tags))];
+let aTag=null,aId=null,hist=[],notes={};
+const files=[
+  {name:"The_Art_of_Praise.docx",type:"DOCX",date:"Uploaded"},
+  {name:"Posture_of_Prayer.docx",type:"DOCX",date:"Uploaded"},
+  {name:"The_Authority_of_Prayer.docx",type:"DOCX",date:"Uploaded"},
+  {name:"The_13_Doctrinal_Pillars.docx",type:"DOCX",date:"Uploaded"}
+];
+
+const SYS=`You are the Kingdom Teaching Agent for Church of the Living God, Atlanta, GA. You serve a pastor building a teaching ministry. You are a deeply knowledgeable expert in Apostolic, Oneness Pentecostal, and Kingdom theology.
+
+EXISTING TEACHINGS:
+1. "The Posture of Prayer" (Book 1, Kingdom Blueprint Series) — 4 modules, 12 lessons on prayer as a posture that trains spiritual capacity
+2. "The Authority of Prayer" (Book 2, Kingdom Blueprint Series) — prayer as Kingdom legislation, 5 parts, 13 chapters, governmental prayer
+3. "The Art of Praise" — 4 lessons, 15 principles from Daniel, David, and Job
+4. "The 13 Doctrinal Pillars of the Church of the Living God, Atlanta" — Word, Godhead (Oneness), Name of Jesus, Salvation (Acts 2:38), Holy Ghost, Holiness, Sabbath, Prayer/Fasting, The Church, Ministry, Return of Christ, Final Judgment, New Heaven/Earth
+
+KINGDOM BLUEPRINT SERIES IN DEVELOPMENT:
+- Book 1: The Posture of Prayer (COMPLETE)
+- Book 2: The Authority of Prayer (COMPLETE)
+- Planned: The Language of Prayer, The Warfare of Prayer, The Art of Worship, The Art of Intercession, Kingdom Identity, Kingdom Culture, Kingdom Economics, Kingdom Government
+
+YOUR CAPABILITIES:
+- CREATE full teachings with introduction, lessons, KJV scriptures, teaching points, application, and conclusion
+- WRITE next books in the Kingdom Blueprint Series
+- BUILD sermon outlines (3-point, expository, topical, prophetic)
+- GENERATE study guides with weekly topics, scriptures, and discussion questions
+- BREAK DOWN any doctrine at beginner, intermediate, and advanced levels
+- SUGGEST KJV scriptures organized by theme
+
+ALWAYS use KJV scripture references. Maintain an Apostolic, prophetic, and doctrinally sound tone fitting Church of the Living God, Atlanta. Honor Oneness Pentecostal doctrine (Acts 2:38 salvation, oneness of the Godhead, holiness standard). Be thorough when creating teachings.`;
+
+function showPage(n,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+n).classList.add('active');
+  btn.classList.add('active');
+}
+
+function buildFS(){
+  document.getElementById('fstrip').innerHTML=
+    '<button class="fchip on" onclick="setTag(null,this)">All</button>'+
+    allTags.map(t=>`<button class="fchip" onclick="setTag('${t}',this)">${t}</button>`).join('');
+}
+
+function setTag(tag,btn){
+  aTag=tag;
+  document.querySelectorAll('.fchip').forEach(c=>c.classList.remove('on'));
+  btn.classList.add('on');
+  filterT();
+}
+
+function filterT(){
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  const grid=document.getElementById('tgrid');
+  const f=T.filter(t=>{
+    const mTag=!aTag||t.tags.includes(aTag);
+    const mQ=!q||[t.title,t.desc,...t.tags,t.html.replace(/<[^>]+>/g,' ')].join(' ').toLowerCase().includes(q);
+    return mTag&&mQ;
+  });
+  grid.innerHTML=f.map(t=>`
+    <div class="tcard ${aId===t.id?'sel':''}" id="tc-${t.id}" onclick="showD(${t.id})">
+      <div class="tcard-acc"></div>
+      <div class="tcard-ser">${t.series}</div>
+      <div class="tcard-ttl">${t.title}</div>
+      <div class="tcard-dsc">${t.desc}</div>
+      <div class="tcard-tags">${t.tags.map(tg=>`<span class="tag">${tg}</span>`).join('')}</div>
+      <div class="tcard-ft">
+        ${notes[t.id]?'<span class="nsaved">Note saved</span>':'<span></span>'}
+        <button class="vlink">View teaching →</button>
+      </div>
+    </div>`).join('');
+  document.getElementById('totalCnt').textContent=T.length+Math.max(0,files.length-4);
+}
+
+function showD(id){
+  const t=T.find(x=>x.id===id);
+  aId=id;
+  document.getElementById('dser').textContent=t.series;
+  document.getElementById('dttl').textContent=t.title+(t.sub?' — '+t.sub:'');
+  document.getElementById('dbody').innerHTML=t.html;
+  document.getElementById('narea').value=notes[id]||'';
+  const p=document.getElementById('dpanel');
+  p.classList.add('active');
+  p.scrollIntoView({behavior:'smooth',block:'nearest'});
+  filterT();
+}
+
+function closeD(){
+  document.getElementById('dpanel').classList.remove('active');
+  aId=null;filterT();
+}
+
+function saveNote(){
+  if(!aId)return;
+  notes[aId]=document.getElementById('narea').value;
+  filterT();
+  const btn=document.querySelector('.snbtn');
+  btn.textContent='Saved!';
+  setTimeout(()=>btn.textContent='Save note',1500);
+}
+
+const modes={
+  chat:{ph:'Ask anything — create teachings, complete the Kingdom Blueprint Series, build outlines, suggest scriptures...',qps:[['Create: Fear of the Lord','Create a complete teaching outline on The Fear of the Lord for Church of the Living God, Atlanta. Introduction, 3 lessons with KJV scriptures, application, and conclusion. Apostolic tone.'],['Next Kingdom Blueprint book','Write a complete outline for Book 3 of the Kingdom Blueprint Series: The Language of Prayer — decrees, declarations, intercession as Kingdom speech. Apostolic, KJV.'],['Oneness doctrine simplified','Break down the Oneness of God doctrine for a new convert in simple language with KJV scriptures.'],['4-week study: Authority of Prayer','Create a 4-week small group study guide for The Authority of Prayer teaching. Weekly topics, KJV scriptures, and discussion questions.'],['KJV scriptures on holiness','List and organize the most important KJV scriptures on holiness and consecration with brief teaching notes.']]},
+  create:{ph:'Describe the teaching you want to create...',qps:[['Full teaching: Holiness','Create a complete, fully-developed teaching on Holiness for Church of the Living God, Atlanta. Introduction, 3 lessons, KJV scriptures, teaching points, application, discussion questions, and conclusion. Apostolic tone.'],['Full teaching: The Blood of Jesus','Create a complete teaching on The Power of the Blood of Jesus — covenant, covering, healing, and cleansing. 3 lessons, KJV scriptures. Apostolic tone.'],['Full teaching: The Fear of the Lord','Create a complete teaching on The Fear of the Lord — what it means, why it matters, and how it produces wisdom and holiness. KJV scriptures. Apostolic tone.'],['Full teaching: Faith & Action','Create a complete teaching on Faith and Action — how living faith produces results, moves mountains, and aligns with Kingdom authority. KJV. Apostolic tone.']]},
+  breakdown:{ph:'Enter a doctrine or topic to break down at all levels...',qps:[['Break down: Repentance','Break down the doctrine of Repentance for beginner, intermediate, and advanced saints. KJV scriptures and practical application for each level.'],['Break down: Water Baptism in Jesus Name','Break down Water Baptism in Jesus Name — why Jesus Name only, biblical basis (Matthew 28:19 vs Acts 2:38). Beginner to advanced. Apostolic KJV.'],['Break down: The Holy Ghost','Break down receiving the Holy Ghost with the initial evidence of speaking in tongues — biblical, doctrinal, and practical. Beginner to advanced. Apostolic KJV.'],['Break down: The Sabbath','Break down the commandment-keeping Sabbath doctrine — why Saturday, what to do, what to avoid, and its covenant significance. KJV. All levels.']]},
+  study:{ph:'Describe the study guide you need...',qps:[['Study guide: Posture of Prayer','Create a 4-week small group study guide for The Posture of Prayer. Each week: theme, KJV scriptures, teaching summary, discussion questions, and weekly practice.'],['Study guide: Art of Praise','Create a 4-week study guide for The Art of Praise. Weekly themes from Daniel, David, and Job. Discussion questions, scripture readings, and practical exercises.'],['Study guide: 13 Doctrinal Pillars','Create a 13-week study guide for The 13 Doctrinal Pillars. One pillar per week — KJV scriptures, key teaching points, and discussion questions.'],['New Converts class — 6 weeks','Create a 6-week New Converts Class curriculum for Church of the Living God, Atlanta. Covering salvation (Acts 2:38), Oneness of God, holiness, prayer, the Church, and Kingdom living.']]},
+  series:{ph:'Ask me to write any planned book in the Kingdom Blueprint Series...',qps:[['Write: The Language of Prayer','Write a complete teaching outline for Book 3 of the Kingdom Blueprint Series: The Language of Prayer — decrees, declarations, intercession, and tongues as Kingdom governmental speech. 4 lessons, KJV scriptures. Apostolic tone.'],['Write: The Art of Worship','Write a complete teaching for: The Art of Worship — tabernacle worship pattern, surrender, and living as a worshipper. 3 lessons, KJV. Apostolic tone.'],['Write: Kingdom Identity','Write a complete teaching for: Kingdom Identity — kings and priests, royal priesthood, sonship, and identity versus religion. 3 lessons, KJV. Apostolic tone.'],['Write: Kingdom Culture','Write a complete teaching for: Kingdom Culture — Heaven vs world culture, holiness as lifestyle, and the standard of living for the saints. 3 lessons, KJV. Apostolic tone.']]}
+};
+
+function setMode(m,btn){
+  document.querySelectorAll('.mbtn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  const cfg=modes[m]||modes.chat;
+  document.getElementById('cin').placeholder=cfg.ph;
+  document.getElementById('qps').innerHTML=cfg.qps.map(([l,p])=>
+    `<button class="qp" onclick="qp('${p.replace(/'/g,"\\'")}')"> ${l}</button>`).join('');
+}
+
+function qp(t){document.getElementById('cin').value=t;sendMsg();}
+
+function goGen(p){
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn')[2].classList.add('active');
+  document.getElementById('page-agent').classList.add('active');
+  setTimeout(()=>{document.getElementById('cin').value=p;sendMsg();},150);
+}
+
+async function sendMsg(){
+  const inp=document.getElementById('cin');
+  const msg=inp.value.trim();
+  if(!msg)return;
+  const btn=document.getElementById('sbtn');
+  btn.disabled=true;inp.value='';
+  addMsg(msg,'user');
+  hist.push({role:'user',content:msg});
+  const loader=addMsg('Seeking the Word and preparing your teaching...','loading');
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{"Content-Type":"application/json","x-api-key":"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","anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:SYS,messages:hist})
+    });
+    const d=await r.json();
+    const txt=d.content?.map(c=>c.text||'').join('')||'Unable to retrieve a response.';
+    loader.remove();addMsg(txt,'agent');
+    hist.push({role:'assistant',content:txt});
+    if(hist.length>24)hist=hist.slice(-24);
+  }catch(e){loader.remove();addMsg('Connection error. Please try again.','agent');}
+  btn.disabled=false;
+}
+
+function addMsg(txt,type){
+  const box=document.getElementById('cmsgs');
+  const d=document.createElement('div');
+  d.className='msg '+type;d.textContent=txt;
+  box.appendChild(d);box.scrollTop=box.scrollHeight;
+  return d;
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('cin').addEventListener('keydown',e=>{
+    if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}
+  });
+  setMode('chat',document.querySelector('.mbtn.on'));
+});
+
+function renderFiles(){
+  document.getElementById('flist').innerHTML=files.map(f=>`
+    <div class="fitem">
+      <div class="fic">${f.type}</div>
+      <div><div class="fnm">${f.name}</div><div class="fmt">${f.date}</div></div>
+      <span class="fbadge">Saved</span>
+    </div>`).join('');
+}
+
+function handleFile(e){
+  const f=e.target.files[0];if(!f)return;
+  files.unshift({name:f.name,type:f.name.split('.').pop().toUpperCase(),date:'Just now'});
+  renderFiles();
+  alert('"'+f.name+'" has been added to the vault!');
+}
+function dov(e){e.preventDefault();document.getElementById('uzone').classList.add('drag')}
+function dlv(){document.getElementById('uzone').classList.remove('drag')}
+function ddr(e){e.preventDefault();dlv();const f=e.dataTransfer.files[0];if(f){handleFile({target:{files:[f]}});}}
+
+buildFS();filterT();renderFiles();
+</script>
+</body>
+</html>
